@@ -8,12 +8,19 @@ namespace WebApplicationProject.Controllers;
 [Route("api/[controller]")]
 public class UsersController : ControllerBase
 {
+    #region [ Private Members ]
     private readonly EmployeeContext _dbContext;
+
+    #endregion
+
+    #region [ Construtor ]
 
     public UsersController(EmployeeContext dbContext)
     {
         _dbContext = dbContext;
     }
+
+    #endregion
 
     [HttpGet]
     [ProducesResponseType(200)]
