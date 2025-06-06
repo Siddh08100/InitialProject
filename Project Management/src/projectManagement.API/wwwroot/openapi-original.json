@@ -1,0 +1,1193 @@
+{
+  "openapi" : "3.0.3",
+  "info" : {
+    "description" : "Project Management API",
+    "title" : "Project Management API",
+    "version" : "1.0"
+  },
+  "servers" : [ {
+    "url" : "https://user.server.test/v1"
+  } ],
+  "tags" : [ {
+    "description" : "User operations",
+    "name" : "User"
+  }, {
+    "description" : "Order operations",
+    "name" : "Project"
+  }, {
+    "description" : "Task operations",
+    "name" : "Task"
+  } ],
+  "paths" : {
+    "/Users" : {
+      "get" : {
+        "description" : "Retrieve a list of users",
+        "operationId" : "getUsers",
+        "parameters" : [ {
+          "explode" : true,
+          "in" : "query",
+          "name" : "pageIndex",
+          "required" : false,
+          "schema" : {
+            "default" : 1,
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "style" : "form"
+        }, {
+          "explode" : true,
+          "in" : "query",
+          "name" : "pageSize",
+          "required" : false,
+          "schema" : {
+            "default" : 10,
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "style" : "form"
+        }, {
+          "explode" : true,
+          "in" : "query",
+          "name" : "totalCount",
+          "required" : false,
+          "schema" : {
+            "default" : 1,
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "style" : "form"
+        }, {
+          "explode" : true,
+          "in" : "query",
+          "name" : "pageNumber",
+          "required" : false,
+          "schema" : {
+            "default" : 1,
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "style" : "form"
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/getUsers_200_response"
+                }
+              }
+            },
+            "description" : "OK"
+          },
+          "default" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error"
+                }
+              }
+            },
+            "description" : "Unexpected error"
+          }
+        },
+        "summary" : "Get Users",
+        "tags" : [ "User" ]
+      },
+      "post" : {
+        "operationId" : "createUser",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/User"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "201" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/User"
+                }
+              }
+            },
+            "description" : "User created successfully"
+          },
+          "400" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error"
+                }
+              }
+            },
+            "description" : "Bad Request"
+          },
+          "default" : {
+            "description" : "Unexpected error"
+          }
+        },
+        "summary" : "Create User",
+        "tags" : [ "User" ]
+      },
+      "put" : {
+        "operationId" : "updateUser",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/User"
+              }
+            },
+            "application/xml" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/User"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/User"
+                }
+              }
+            },
+            "description" : "User updated successfully"
+          },
+          "400" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error"
+                }
+              }
+            },
+            "description" : "Bad Request"
+          },
+          "404" : {
+            "description" : "User not found"
+          },
+          "default" : {
+            "description" : "Unexpected error"
+          }
+        },
+        "summary" : "Update User",
+        "tags" : [ "User" ]
+      }
+    },
+    "/Users/{id}" : {
+      "get" : {
+        "operationId" : "findUserById",
+        "parameters" : [ {
+          "description" : "Status values that need to be considered for filter",
+          "explode" : false,
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "style" : "simple"
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/User"
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "items" : {
+                    "$ref" : "#/components/schemas/User"
+                  },
+                  "type" : "array"
+                }
+              }
+            },
+            "description" : "successful operation"
+          },
+          "400" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error"
+                }
+              }
+            },
+            "description" : "Invalid status value"
+          },
+          "404" : {
+            "description" : "User not found"
+          },
+          "default" : {
+            "description" : "Unexpected error"
+          }
+        },
+        "summary" : "Finds User by Id..",
+        "tags" : [ "User" ]
+      }
+    },
+    "/Users/{id}/deleteUser" : {
+      "put" : {
+        "operationId" : "deleteUser",
+        "parameters" : [ {
+          "description" : "ID of user to delete",
+          "explode" : false,
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "style" : "simple"
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "User deleted successfully"
+          },
+          "400" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error"
+                }
+              }
+            },
+            "description" : "Bad Request"
+          },
+          "404" : {
+            "description" : "User not found"
+          },
+          "default" : {
+            "description" : "Unexpected error"
+          }
+        },
+        "summary" : "Delete User",
+        "tags" : [ "User" ]
+      }
+    },
+    "/Projects" : {
+      "get" : {
+        "description" : "Get a list of projects",
+        "operationId" : "getProjects",
+        "parameters" : [ {
+          "explode" : true,
+          "in" : "query",
+          "name" : "pageIndex",
+          "required" : false,
+          "schema" : {
+            "default" : 1,
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "style" : "form"
+        }, {
+          "explode" : true,
+          "in" : "query",
+          "name" : "pageSize",
+          "required" : false,
+          "schema" : {
+            "default" : 10,
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "style" : "form"
+        }, {
+          "explode" : true,
+          "in" : "query",
+          "name" : "totalCount",
+          "required" : false,
+          "schema" : {
+            "default" : 1,
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "style" : "form"
+        }, {
+          "explode" : true,
+          "in" : "query",
+          "name" : "pageNumber",
+          "required" : false,
+          "schema" : {
+            "default" : 1,
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "style" : "form"
+        }, {
+          "explode" : true,
+          "in" : "query",
+          "name" : "status",
+          "required" : false,
+          "schema" : {
+            "default" : "",
+            "enum" : [ "Pending", "In Progress", "Completed" ],
+            "type" : "string"
+          },
+          "style" : "form"
+        }, {
+          "explode" : true,
+          "in" : "query",
+          "name" : "userId",
+          "required" : false,
+          "schema" : {
+            "default" : 0,
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "style" : "form"
+        }, {
+          "explode" : true,
+          "in" : "query",
+          "name" : "projectId",
+          "required" : false,
+          "schema" : {
+            "default" : 0,
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "style" : "form"
+        }, {
+          "explode" : true,
+          "in" : "query",
+          "name" : "role",
+          "required" : false,
+          "schema" : {
+            "default" : "",
+            "enum" : [ "Owner", "Contributor", "Viewer" ],
+            "type" : "string"
+          },
+          "style" : "form"
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/getProjects_200_response"
+                }
+              }
+            },
+            "description" : "OK"
+          },
+          "default" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error"
+                }
+              }
+            },
+            "description" : "Unexpected error"
+          }
+        },
+        "summary" : "Get All Projects",
+        "tags" : [ "Project" ]
+      },
+      "post" : {
+        "operationId" : "createProject",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Project"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "201" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Project"
+                }
+              }
+            },
+            "description" : "Project created successfully"
+          },
+          "400" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error"
+                }
+              }
+            },
+            "description" : "Bad Request"
+          },
+          "default" : {
+            "description" : "Unexpected error"
+          }
+        },
+        "summary" : "Create Project",
+        "tags" : [ "Project" ]
+      },
+      "put" : {
+        "operationId" : "updateProject",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Project"
+              }
+            },
+            "application/xml" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Project"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Project"
+                }
+              }
+            },
+            "description" : "Project updated successfully"
+          },
+          "400" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error"
+                }
+              }
+            },
+            "description" : "Bad Request"
+          },
+          "404" : {
+            "description" : "Project not found"
+          },
+          "default" : {
+            "description" : "Unexpected error"
+          }
+        },
+        "summary" : "Update Project",
+        "tags" : [ "Project" ]
+      }
+    },
+    "/Projects/updateUserProjectStatus" : {
+      "put" : {
+        "operationId" : "updateUserProjectStatus",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/updateUserProjectStatus_request"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Project status updated successfully"
+          },
+          "400" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error"
+                }
+              }
+            },
+            "description" : "Bad Request"
+          },
+          "404" : {
+            "description" : "Project not found"
+          },
+          "default" : {
+            "description" : "Unexpected error"
+          }
+        },
+        "summary" : "Update Project Status",
+        "tags" : [ "Project" ]
+      }
+    },
+    "/projects/{id}/deleteProject" : {
+      "put" : {
+        "operationId" : "deleteProject",
+        "parameters" : [ {
+          "description" : "ID of project to delete",
+          "explode" : false,
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "style" : "simple"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Project deleted successfully"
+          },
+          "400" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error"
+                }
+              }
+            },
+            "description" : "Bad Request"
+          },
+          "404" : {
+            "description" : "Project not found"
+          },
+          "default" : {
+            "description" : "Unexpected error"
+          }
+        },
+        "summary" : "Delete Project",
+        "tags" : [ "Project" ]
+      }
+    },
+    "/Tasks" : {
+      "get" : {
+        "description" : "Get a list of tasks",
+        "operationId" : "getTasks",
+        "parameters" : [ {
+          "explode" : true,
+          "in" : "query",
+          "name" : "pageIndex",
+          "required" : false,
+          "schema" : {
+            "default" : 1,
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "style" : "form"
+        }, {
+          "explode" : true,
+          "in" : "query",
+          "name" : "pageSize",
+          "required" : false,
+          "schema" : {
+            "default" : 10,
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "style" : "form"
+        }, {
+          "explode" : true,
+          "in" : "query",
+          "name" : "totalCount",
+          "required" : false,
+          "schema" : {
+            "default" : 1,
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "style" : "form"
+        }, {
+          "explode" : true,
+          "in" : "query",
+          "name" : "pageNumber",
+          "required" : false,
+          "schema" : {
+            "default" : 1,
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "style" : "form"
+        }, {
+          "explode" : true,
+          "in" : "query",
+          "name" : "status",
+          "required" : false,
+          "schema" : {
+            "default" : "",
+            "enum" : [ "Pending", "In Progress", "Completed" ],
+            "type" : "string"
+          },
+          "style" : "form"
+        }, {
+          "explode" : true,
+          "in" : "query",
+          "name" : "userId",
+          "required" : false,
+          "schema" : {
+            "default" : 0,
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "style" : "form"
+        }, {
+          "explode" : true,
+          "in" : "query",
+          "name" : "projectId",
+          "required" : false,
+          "schema" : {
+            "default" : 0,
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "style" : "form"
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/getTasks_200_response"
+                }
+              }
+            },
+            "description" : "OK"
+          },
+          "default" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error"
+                }
+              }
+            },
+            "description" : "Unexpected error"
+          }
+        },
+        "summary" : "Get All Tasks",
+        "tags" : [ "Task" ]
+      },
+      "post" : {
+        "operationId" : "createTask",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/createTask_request"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "201" : {
+            "description" : "Task created successfully"
+          },
+          "400" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error"
+                }
+              }
+            },
+            "description" : "Bad Request"
+          },
+          "default" : {
+            "description" : "Unexpected error"
+          }
+        },
+        "summary" : "Create Task",
+        "tags" : [ "Task" ]
+      },
+      "put" : {
+        "operationId" : "updateTask",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/updateTask_request"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Task updated successfully"
+          },
+          "400" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error"
+                }
+              }
+            },
+            "description" : "Bad Request"
+          },
+          "404" : {
+            "description" : "Task not found"
+          },
+          "default" : {
+            "description" : "Unexpected error"
+          }
+        },
+        "summary" : "Update Task",
+        "tags" : [ "Task" ]
+      }
+    },
+    "/Tasks/{id}" : {
+      "get" : {
+        "operationId" : "getTaskById",
+        "parameters" : [ {
+          "description" : "ID of task to retrieve",
+          "explode" : false,
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "style" : "simple"
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Task"
+                }
+              }
+            },
+            "description" : "successful operation"
+          },
+          "400" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error"
+                }
+              }
+            },
+            "description" : "Invalid ID supplied"
+          },
+          "404" : {
+            "description" : "Task not found"
+          },
+          "default" : {
+            "description" : "Unexpected error"
+          }
+        },
+        "summary" : "Get Task by Id",
+        "tags" : [ "Task" ]
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "paging" : {
+        "example" : {
+          "pageNumber" : 1,
+          "pageIndex" : 1,
+          "pageSize" : 10,
+          "totalCount" : 100
+        },
+        "properties" : {
+          "pageIndex" : {
+            "example" : 1,
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "pageSize" : {
+            "example" : 10,
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "totalCount" : {
+            "example" : 100,
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "pageNumber" : {
+            "example" : 1,
+            "format" : "int64",
+            "type" : "integer"
+          }
+        },
+        "type" : "object"
+      },
+      "User" : {
+        "example" : {
+          "firstName" : "John",
+          "lastName" : "Doe",
+          "role" : "TSE",
+          "id" : 1,
+          "userName" : "JohnDoe@123",
+          "email" : "johnDoe@gmail.com"
+        },
+        "properties" : {
+          "id" : {
+            "example" : 1,
+            "type" : "integer"
+          },
+          "firstName" : {
+            "example" : "John",
+            "type" : "string"
+          },
+          "lastName" : {
+            "example" : "Doe",
+            "type" : "string"
+          },
+          "userName" : {
+            "example" : "JohnDoe@123",
+            "type" : "string"
+          },
+          "email" : {
+            "example" : "johnDoe@gmail.com",
+            "format" : "email",
+            "type" : "string"
+          },
+          "role" : {
+            "example" : "TSE",
+            "type" : "string"
+          }
+        },
+        "required" : [ "email", "firstName", "lastName", "userName" ],
+        "type" : "object"
+      },
+      "Project" : {
+        "example" : {
+          "createdDate" : "2000-01-23T04:56:07.000+00:00",
+          "createdBy" : 1,
+          "name" : "Project Management System",
+          "description" : "Manage Projects",
+          "Id" : 1,
+          "updatedDate" : "2000-01-23T04:56:07.000+00:00",
+          "status" : "Pending"
+        },
+        "properties" : {
+          "Id" : {
+            "example" : 1,
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "name" : {
+            "example" : "Project Management System",
+            "type" : "string"
+          },
+          "description" : {
+            "example" : "Manage Projects",
+            "type" : "string"
+          },
+          "status" : {
+            "example" : "Pending",
+            "type" : "string"
+          },
+          "createdBy" : {
+            "example" : 1,
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "createdDate" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "updatedDate" : {
+            "format" : "date-time",
+            "type" : "string"
+          }
+        },
+        "required" : [ "description", "name", "status" ],
+        "type" : "object"
+      },
+      "Task" : {
+        "example" : {
+          "UserId" : 1,
+          "dueDate" : "2000-01-23T04:56:07.000+00:00",
+          "name" : "Task 1",
+          "description" : "Description of Task 1",
+          "id" : 1,
+          "projectName" : "Project Management System",
+          "title" : "Task Title 1",
+          "assignedTo" : "John Doe",
+          "status" : "In Progress"
+        },
+        "properties" : {
+          "id" : {
+            "example" : 1,
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "projectName" : {
+            "example" : "Project Management System",
+            "type" : "string"
+          },
+          "name" : {
+            "example" : "Task 1",
+            "type" : "string"
+          },
+          "title" : {
+            "example" : "Task Title 1",
+            "type" : "string"
+          },
+          "description" : {
+            "example" : "Description of Task 1",
+            "type" : "string"
+          },
+          "status" : {
+            "example" : "In Progress",
+            "type" : "string"
+          },
+          "assignedTo" : {
+            "example" : "John Doe",
+            "type" : "string"
+          },
+          "UserId" : {
+            "example" : 1,
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "dueDate" : {
+            "format" : "date-time",
+            "type" : "string"
+          }
+        },
+        "type" : "object"
+      },
+      "error" : {
+        "example" : {
+          "code" : 400,
+          "message" : "Bad Request"
+        },
+        "properties" : {
+          "code" : {
+            "example" : 400,
+            "type" : "integer"
+          },
+          "message" : {
+            "example" : "Bad Request",
+            "type" : "string"
+          }
+        },
+        "required" : [ "code", "message" ],
+        "type" : "object"
+      },
+      "getUsers_200_response" : {
+        "example" : {
+          "paging" : {
+            "pageNumber" : 1,
+            "pageIndex" : 1,
+            "pageSize" : 10,
+            "totalCount" : 100
+          },
+          "users" : [ {
+            "firstName" : "John",
+            "lastName" : "Doe",
+            "role" : "TSE",
+            "id" : 1,
+            "userName" : "JohnDoe@123",
+            "email" : "johnDoe@gmail.com"
+          }, {
+            "firstName" : "John",
+            "lastName" : "Doe",
+            "role" : "TSE",
+            "id" : 1,
+            "userName" : "JohnDoe@123",
+            "email" : "johnDoe@gmail.com"
+          } ]
+        },
+        "properties" : {
+          "paging" : {
+            "$ref" : "#/components/schemas/paging"
+          },
+          "users" : {
+            "items" : {
+              "$ref" : "#/components/schemas/User"
+            },
+            "type" : "array"
+          }
+        },
+        "type" : "object"
+      },
+      "getProjects_200_response" : {
+        "example" : {
+          "projects" : [ {
+            "createdDate" : "2000-01-23T04:56:07.000+00:00",
+            "createdBy" : 1,
+            "name" : "Project Management System",
+            "description" : "Manage Projects",
+            "Id" : 1,
+            "updatedDate" : "2000-01-23T04:56:07.000+00:00",
+            "status" : "Pending"
+          }, {
+            "createdDate" : "2000-01-23T04:56:07.000+00:00",
+            "createdBy" : 1,
+            "name" : "Project Management System",
+            "description" : "Manage Projects",
+            "Id" : 1,
+            "updatedDate" : "2000-01-23T04:56:07.000+00:00",
+            "status" : "Pending"
+          } ],
+          "paging" : {
+            "pageNumber" : 1,
+            "pageIndex" : 1,
+            "pageSize" : 10,
+            "totalCount" : 100
+          }
+        },
+        "properties" : {
+          "paging" : {
+            "$ref" : "#/components/schemas/paging"
+          },
+          "projects" : {
+            "items" : {
+              "$ref" : "#/components/schemas/Project"
+            },
+            "type" : "array"
+          }
+        },
+        "type" : "object"
+      },
+      "updateUserProjectStatus_request" : {
+        "properties" : {
+          "projectId" : {
+            "example" : 1,
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "userId" : {
+            "example" : 1,
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "status" : {
+            "example" : "Owner",
+            "type" : "string"
+          }
+        },
+        "type" : "object"
+      },
+      "getTasks_200_response" : {
+        "example" : {
+          "paging" : {
+            "pageNumber" : 1,
+            "pageIndex" : 1,
+            "pageSize" : 10,
+            "totalCount" : 100
+          },
+          "tasks" : [ {
+            "UserId" : 1,
+            "dueDate" : "2000-01-23T04:56:07.000+00:00",
+            "name" : "Task 1",
+            "description" : "Description of Task 1",
+            "id" : 1,
+            "projectName" : "Project Management System",
+            "title" : "Task Title 1",
+            "assignedTo" : "John Doe",
+            "status" : "In Progress"
+          }, {
+            "UserId" : 1,
+            "dueDate" : "2000-01-23T04:56:07.000+00:00",
+            "name" : "Task 1",
+            "description" : "Description of Task 1",
+            "id" : 1,
+            "projectName" : "Project Management System",
+            "title" : "Task Title 1",
+            "assignedTo" : "John Doe",
+            "status" : "In Progress"
+          } ]
+        },
+        "properties" : {
+          "paging" : {
+            "$ref" : "#/components/schemas/paging"
+          },
+          "tasks" : {
+            "items" : {
+              "$ref" : "#/components/schemas/Task"
+            },
+            "type" : "array"
+          }
+        },
+        "type" : "object"
+      },
+      "updateTask_request" : {
+        "properties" : {
+          "id" : {
+            "example" : 1,
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "title" : {
+            "example" : "Task Title 1",
+            "type" : "string"
+          },
+          "description" : {
+            "example" : "Description of Task 1",
+            "type" : "string"
+          },
+          "status" : {
+            "example" : "In Progress",
+            "type" : "string"
+          },
+          "assignedTo" : {
+            "example" : 1,
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "projectId" : {
+            "example" : 1,
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "dueDate" : {
+            "format" : "date-time",
+            "type" : "string"
+          }
+        },
+        "required" : [ "assignedTo", "description", "dueDate", "projectId", "status", "title" ],
+        "type" : "object"
+      },
+      "createTask_request" : {
+        "properties" : {
+          "id" : {
+            "example" : 1,
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "title" : {
+            "example" : "Task Title 1",
+            "type" : "string"
+          },
+          "description" : {
+            "example" : "Description of Task 1",
+            "type" : "string"
+          },
+          "status" : {
+            "example" : "In Progress",
+            "type" : "string"
+          },
+          "assignedTo" : {
+            "example" : 1,
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "projectId" : {
+            "example" : 1,
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "dueDate" : {
+            "format" : "date-time",
+            "type" : "string"
+          }
+        },
+        "required" : [ "description", "dueDate", "status", "title" ],
+        "type" : "object"
+      }
+    }
+  }
+}
