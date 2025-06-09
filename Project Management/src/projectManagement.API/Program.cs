@@ -17,6 +17,7 @@ namespace projectManagement.API
             CreateHostBuilder(args).Build().Run();
         }
 
+
         /// <summary>
         /// Create the host builder.
         /// </summary>
@@ -27,7 +28,7 @@ namespace projectManagement.API
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                    webBuilder.UseStartup<Startup>()
-                             .UseUrls("http://localhost:5048/");
+                             .UseUrls("http://localhost:5001/");
                 });
     }
 }

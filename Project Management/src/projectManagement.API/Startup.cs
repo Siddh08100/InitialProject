@@ -24,6 +24,9 @@ using projectManagement.API.Authentication;
 using projectManagement.API.Filters;
 using projectManagement.API.OpenApi;
 using projectManagement.API.Formatters;
+using Microsoft.EntityFrameworkCore;
+using projectManagement.Infrastructure.Context;
+using projectManagement.Application.Mapper;
 
 namespace projectManagement.API
 {
@@ -53,10 +56,18 @@ namespace projectManagement.API
         public void ConfigureServices(IServiceCollection services)
         {
 
+            services.AddDbContext<ProjectManagementContext>(options =>
+        options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
+
+        services.AddAutoMapper(typeof(mapper));
+        services.AddScoped<Application.Interfaces.IUserService,Application.Services.UserService>();
+        services.AddScoped<Application.Interfaces.IUserRepository,Infrastructure.Repository.UserRepository>();
+
             // Add framework services.
             services
                 // Don't need the full MVC stack for an API, see https://andrewlock.net/comparing-startup-between-the-asp-net-core-3-templates/
-                .AddControllers(options => {
+                .AddControllers(options =>
+                {
                     options.InputFormatters.Insert(0, new InputFormatterStream());
                 })
                 .AddNewtonsoftJson(opts =>
@@ -71,7 +82,7 @@ namespace projectManagement.API
                 .AddSwaggerGen(c =>
                 {
                     c.EnableAnnotations(enableAnnotationsForInheritance: true, enableAnnotationsForPolymorphism: true);
-                    
+
                     c.SwaggerDoc("1.0", new OpenApiInfo
                     {
                         Title = "Project Management API",
@@ -99,8 +110,8 @@ namespace projectManagement.API
                     // Use [ValidateModelState] on Actions to actually validate it in C# as well!
                     c.OperationFilter<GeneratePathParamsValidationFilter>();
                 });
-                services
-                    .AddSwaggerGenNewtonsoftSupport();
+            services
+                .AddSwaggerGenNewtonsoftSupport();
         }
 
         /// <summary>

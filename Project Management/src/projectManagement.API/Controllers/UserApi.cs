@@ -19,7 +19,7 @@ using Microsoft.AspNetCore.Http;
 using Swashbuckle.AspNetCore.Annotations;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Newtonsoft.Json;
-using projectManagement.API.Attributes;
+using projectManagement.API.Attributes; 
 using projectManagement.API.Models;
 
 namespace projectManagement.API.Controllers
@@ -38,7 +38,7 @@ namespace projectManagement.API.Controllers
         /// <response code="400">Bad Request</response>
         /// <response code="0">Unexpected error</response>
         [HttpPost]
-        [Route("/v1/Users")]
+        [Route("Users")]
         [Consumes("application/json")]
         [ValidateModelState]
         [SwaggerOperation("CreateUser")]
@@ -55,7 +55,7 @@ namespace projectManagement.API.Controllers
         /// <response code="404">User not found</response>
         /// <response code="0">Unexpected error</response>
         [HttpPut]
-        [Route("/v1/Users/{id}/deleteUser")]
+        [Route("Users/{id}/deleteUser")]
         [ValidateModelState]
         [SwaggerOperation("DeleteUser")]
         [SwaggerResponse(statusCode: 400, type: typeof(Error), description: "Bad Request")]
@@ -70,7 +70,7 @@ namespace projectManagement.API.Controllers
         /// <response code="404">User not found</response>
         /// <response code="0">Unexpected error</response>
         [HttpGet]
-        [Route("/v1/Users/{id}")]
+        [Route("Users/{id}")]
         [ValidateModelState]
         [SwaggerOperation("FindUserById")]
         [SwaggerResponse(statusCode: 200, type: typeof(User), description: "successful operation")]
@@ -88,12 +88,12 @@ namespace projectManagement.API.Controllers
         /// <response code="200">OK</response>
         /// <response code="0">Unexpected error</response>
         [HttpGet]
-        [Route("/v1/Users")]
+        [Route("Users")]
         [ValidateModelState]
         [SwaggerOperation("GetUsers")]
         [SwaggerResponse(statusCode: 200, type: typeof(GetUsers200Response), description: "OK")]
         [SwaggerResponse(statusCode: 0, type: typeof(Error), description: "Unexpected error")]
-        public abstract Task<IActionResult> GetUsers([FromQuery (Name = "pageIndex")]long? pageIndex, [FromQuery (Name = "pageSize")]long? pageSize, [FromQuery (Name = "totalCount")]long? totalCount, [FromQuery (Name = "pageNumber")]long? pageNumber);
+        public abstract Task<IActionResult> Users([FromQuery (Name = "pageIndex")]long? pageIndex, [FromQuery (Name = "pageSize")]long? pageSize, [FromQuery (Name = "totalCount")]long? totalCount, [FromQuery (Name = "pageNumber")]long? pageNumber);
 
         /// <summary>
         /// Update User
@@ -104,7 +104,7 @@ namespace projectManagement.API.Controllers
         /// <response code="404">User not found</response>
         /// <response code="0">Unexpected error</response>
         [HttpPut]
-        [Route("/v1/Users")]
+        [Route("Users")]
         [Consumes("application/json", "application/xml")]
         [ValidateModelState]
         [SwaggerOperation("UpdateUser")]

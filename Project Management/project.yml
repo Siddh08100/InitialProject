@@ -650,6 +650,10 @@ components:
         role:
           type: string
           example: TSE
+        # password:
+        #   type: string
+        #   format: password
+        #   example: "password123"
       required:
         - email
         - firstName
