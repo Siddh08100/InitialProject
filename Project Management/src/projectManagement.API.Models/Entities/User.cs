@@ -5,6 +5,7 @@ namespace projectManagement.Domain.Entities;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
+
 public class User
 {
     [Key]
@@ -30,5 +31,5 @@ public class User
     [Required]
     public string Role { get; set; }
 
-    public bool IsDeleted { get; set; } = false;
+    public bool IsDeleted { get; set; }
 }
