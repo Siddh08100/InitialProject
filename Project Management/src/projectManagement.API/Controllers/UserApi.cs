@@ -19,7 +19,7 @@ using Microsoft.AspNetCore.Http;
 using Swashbuckle.AspNetCore.Annotations;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Newtonsoft.Json;
-using projectManagement.API.Attributes; 
+using projectManagement.API.Attributes;
 using projectManagement.API.Models;
 
 namespace projectManagement.API.Controllers
@@ -93,7 +93,7 @@ namespace projectManagement.API.Controllers
         [SwaggerOperation("GetUsers")]
         [SwaggerResponse(statusCode: 200, type: typeof(GetUsers200Response), description: "OK")]
         [SwaggerResponse(statusCode: 0, type: typeof(Error), description: "Unexpected error")]
-        public abstract Task<IActionResult> Users([FromQuery (Name = "pageIndex")]long? pageIndex, [FromQuery (Name = "pageSize")]long? pageSize, [FromQuery (Name = "totalCount")]long? totalCount, [FromQuery (Name = "pageNumber")]long? pageNumber);
+        public abstract Task<IActionResult> GetUsers([FromQuery (Name = "pageIndex")]long? pageIndex, [FromQuery (Name = "pageSize")]long? pageSize, [FromQuery (Name = "totalCount")]long? totalCount, [FromQuery (Name = "pageNumber")]long? pageNumber);
 
         /// <summary>
         /// Update User

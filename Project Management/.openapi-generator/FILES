@@ -1,4 +1,3 @@
-.openapi-generator-ignore
 README.md
 build.bat
 build.sh
@@ -28,9 +27,6 @@ src/projectManagement.API/Filters/BasePathFilter.cs
 src/projectManagement.API/Filters/GeneratePathParamsValidationFilter.cs
 src/projectManagement.API/Formatters/InputFormatterStream.cs
 src/projectManagement.API/OpenApi/TypeExtensions.cs
-src/projectManagement.API/Program.cs
-src/projectManagement.API/Properties/launchSettings.json
-src/projectManagement.API/Startup.cs
 src/projectManagement.API/appsettings.Development.json
 src/projectManagement.API/appsettings.json
 src/projectManagement.API/projectManagement.API.csproj

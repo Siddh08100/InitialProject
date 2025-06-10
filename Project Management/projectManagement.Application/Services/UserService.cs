@@ -60,8 +60,7 @@ public class UserService : IUserService
     public async Task<int> CreateUser(API.Models.User user)
     {
         User newUser = _mapper.Map<User>(user);
-        newUser.IsDeleted = false;
-        newUser.Password = "DefaultPassword"; // Set a default password or handle it as needed
+        newUser.Password = "DefaultPassword";
         try
         {
             await _userRepository.AddAsync(newUser);
