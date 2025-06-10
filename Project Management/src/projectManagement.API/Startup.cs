@@ -15,6 +15,7 @@ using projectManagement.API.Formatters;
 using Microsoft.EntityFrameworkCore;
 using projectManagement.Infrastructure.Context;
 using projectManagement.Application.Mapper;
+using projectManagement.Infrastructure.Middleware;
 
 namespace projectManagement.API
 {
@@ -47,14 +48,14 @@ namespace projectManagement.API
             services.AddDbContext<ProjectManagementContext>(options =>
         options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
 
-        services.AddAutoMapper(typeof(Mapper));
-        services.AddScoped<Application.Interfaces.IUserService,Application.Services.UserService>();
-        services.AddScoped<Application.Interfaces.IProjectService,Application.Services.ProjectService>();
-        services.AddScoped<Application.Interfaces.ITaskService,Application.Services.TaskService>();
+            services.AddAutoMapper(typeof(Mapper));
+            services.AddScoped<Application.Interfaces.IUserService, Application.Services.UserService>();
+            services.AddScoped<Application.Interfaces.IProjectService, Application.Services.ProjectService>();
+            services.AddScoped<Application.Interfaces.ITaskService, Application.Services.TaskService>();
 
-        services.AddScoped<Application.Interfaces.IUserRepository,Infrastructure.Repository.UserRepository>();
-        services.AddScoped<Application.Interfaces.IProjectRepository,Infrastructure.Repository.ProjectRepository>();
-        services.AddScoped<Application.Interfaces.ITaskRepository,Infrastructure.Repository.TaskRepository>();
+            services.AddScoped<Application.Interfaces.IUserRepository, Infrastructure.Repository.UserRepository>();
+            services.AddScoped<Application.Interfaces.IProjectRepository, Infrastructure.Repository.ProjectRepository>();
+            services.AddScoped<Application.Interfaces.ITaskRepository, Infrastructure.Repository.TaskRepository>();
 
             // Add framework services.
             services
@@ -71,6 +72,8 @@ namespace projectManagement.API
                         NamingStrategy = new CamelCaseNamingStrategy()
                     });
                 });
+
+            services.AddLogging();
             services
                 .AddSwaggerGen(c =>
                 {
@@ -126,6 +129,7 @@ namespace projectManagement.API
             app.UseHttpsRedirection();
             app.UseDefaultFiles();
             app.UseStaticFiles();
+            app.UseMiddleware<CustomMiddleware>();
             app.UseSwagger(c =>
                 {
                     c.RouteTemplate = "openapi/{documentName}/openapi.json";
@@ -141,6 +145,7 @@ namespace projectManagement.API
                     // c.SwaggerEndpoint("/openapi-original.json", "Project Management API Original");
                 });
             app.UseRouting();
+            app.UseAuthorization();
             app.UseEndpoints(endpoints =>
                 {
                     endpoints.MapControllers();
