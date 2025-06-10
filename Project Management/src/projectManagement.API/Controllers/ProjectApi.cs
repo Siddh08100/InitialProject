@@ -38,7 +38,7 @@ namespace projectManagement.API.Controllers
         /// <response code="400">Bad Request</response>
         /// <response code="0">Unexpected error</response>
         [HttpPost]
-        [Route("/v1/Projects")]
+        [Route("Projects")]
         [Consumes("application/json")]
         [ValidateModelState]
         [SwaggerOperation("CreateProject")]
@@ -55,7 +55,7 @@ namespace projectManagement.API.Controllers
         /// <response code="404">Project not found</response>
         /// <response code="0">Unexpected error</response>
         [HttpPut]
-        [Route("/v1/projects/{id}/deleteProject")]
+        [Route("projects/{id}/deleteProject")]
         [ValidateModelState]
         [SwaggerOperation("DeleteProject")]
         [SwaggerResponse(statusCode: 400, type: typeof(Error), description: "Bad Request")]
@@ -76,7 +76,7 @@ namespace projectManagement.API.Controllers
         /// <response code="200">OK</response>
         /// <response code="0">Unexpected error</response>
         [HttpGet]
-        [Route("/v1/Projects")]
+        [Route("Projects")]
         [ValidateModelState]
         [SwaggerOperation("GetProjects")]
         [SwaggerResponse(statusCode: 200, type: typeof(GetProjects200Response), description: "OK")]
@@ -92,7 +92,7 @@ namespace projectManagement.API.Controllers
         /// <response code="404">Project not found</response>
         /// <response code="0">Unexpected error</response>
         [HttpPut]
-        [Route("/v1/Projects")]
+        [Route("Projects")]
         [Consumes("application/json", "application/xml")]
         [ValidateModelState]
         [SwaggerOperation("UpdateProject")]
@@ -109,7 +109,7 @@ namespace projectManagement.API.Controllers
         /// <response code="404">Project not found</response>
         /// <response code="0">Unexpected error</response>
         [HttpPut]
-        [Route("/v1/Projects/updateUserProjectStatus")]
+        [Route("Projects/updateUserProjectStatus")]
         [Consumes("application/json")]
         [ValidateModelState]
         [SwaggerOperation("UpdateUserProjectStatus")]

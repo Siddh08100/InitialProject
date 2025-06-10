@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using projectManagement.Infrastructure.Context;
@@ -11,9 +12,11 @@ using projectManagement.Infrastructure.Context;
 namespace projectManagement.Infrastructure.Migrations
 {
     [DbContext(typeof(ProjectManagementContext))]
-    partial class ProjectManagementContextModelSnapshot : ModelSnapshot
+    [Migration("20250610094403_TasksProperties")]
+    partial class TasksProperties
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -35,7 +38,7 @@ namespace projectManagement.Infrastructure.Migrations
 
                     b.Property<DateTime?>("CreatedDate")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasDefaultValueSql("now()");
 
                     b.Property<string>("Description")
@@ -57,6 +60,8 @@ namespace projectManagement.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CreatedDate");
+
                     b.ToTable("Projects");
                 });
 
@@ -76,7 +81,7 @@ namespace projectManagement.Infrastructure.Migrations
 
                     b.Property<DateTime?>("CreatedDate")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasDefaultValueSql("now()");
 
                     b.Property<string>("Description")

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using projectManagement.Infrastructure.Context;
@@ -11,9 +12,11 @@ using projectManagement.Infrastructure.Context;
 namespace projectManagement.Infrastructure.Migrations
 {
     [DbContext(typeof(ProjectManagementContext))]
-    partial class ProjectManagementContextModelSnapshot : ModelSnapshot
+    [Migration("20250610073350_ProjectProperties")]
+    partial class ProjectProperties
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -35,7 +38,7 @@ namespace projectManagement.Infrastructure.Migrations
 
                     b.Property<DateTime?>("CreatedDate")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasDefaultValueSql("now()");
 
                     b.Property<string>("Description")
@@ -57,6 +60,8 @@ namespace projectManagement.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CreatedDate");
+
                     b.ToTable("Projects");
                 });
 
@@ -68,24 +73,22 @@ namespace projectManagement.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("AssignedTo")
+                    b.Property<int>("AssignedTo")
                         .HasColumnType("integer");
 
                     b.Property<int?>("AssignedToUserId")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime?>("CreatedDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
-                        .HasDefaultValueSql("now()");
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
-                    b.Property<DateTime?>("DueDate")
+                    b.Property<DateTime>("DueDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<bool?>("IsDeleted")
+                    b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
                     b.Property<int>("ProjectId")
@@ -97,14 +100,12 @@ namespace projectManagement.Infrastructure.Migrations
                     b.Property<string>("Title")
                         .HasColumnType("text");
 
-                    b.Property<DateTime?>("UpdatedDate")
+                    b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
                     b.HasIndex("AssignedToUserId");
-
-                    b.HasIndex("CreatedDate");
 
                     b.HasIndex("ProjectId");
 
@@ -162,7 +163,7 @@ namespace projectManagement.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<bool?>("IsDeleted")
+                    b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
                     b.Property<int>("ProjectId")

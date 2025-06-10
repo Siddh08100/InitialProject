@@ -73,6 +73,14 @@ namespace projectManagement.API.Models
         public string Role { get; set; }
 
         /// <summary>
+        /// Gets or Sets Password
+        /// </summary>
+        /* <example>password123</example> */
+        [Required]
+        [DataMember(Name="password", EmitDefaultValue=false)]
+        public string Password { get; set; }
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -86,6 +94,7 @@ namespace projectManagement.API.Models
             sb.Append("  UserName: ").Append(UserName).Append("\n");
             sb.Append("  Email: ").Append(Email).Append("\n");
             sb.Append("  Role: ").Append(Role).Append("\n");
+            sb.Append("  Password: ").Append(Password).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -151,6 +160,11 @@ namespace projectManagement.API.Models
                     Role == other.Role ||
                     Role != null &&
                     Role.Equals(other.Role)
+                ) && 
+                (
+                    Password == other.Password ||
+                    Password != null &&
+                    Password.Equals(other.Password)
                 );
         }
 
@@ -176,6 +190,8 @@ namespace projectManagement.API.Models
                     hashCode = hashCode * 59 + Email.GetHashCode();
                     if (Role != null)
                     hashCode = hashCode * 59 + Role.GetHashCode();
+                    if (Password != null)
+                    hashCode = hashCode * 59 + Password.GetHashCode();
                 return hashCode;
             }
         }

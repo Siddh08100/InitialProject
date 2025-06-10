@@ -17,17 +17,17 @@ public class UserService : IUserService
         _mapper = mapper;
     }
 
-    public async Task<object> GetAllUsersAsync(long? pageIndex, long? pageSize, long? totalCount, long? pageNumber)
+    public async Task<object> GetAllUsersAsync(long pageIndex, long pageSize, long pageNumber)
     {
-        (long Count, List<User> users) = await _userRepository.GetAllAsync(pageIndex, pageSize, totalCount, pageNumber);
+        (long totalCount, List<User> users) = await _userRepository.GetAllAsync(pageIndex, pageSize);
         var result = new
         {
             paging = new
             {
-                pageIndex = pageIndex ?? 1,
-                pageSize = pageSize ?? 10,
-                totalCount = Count,
-                pageNumber = pageNumber ?? 1
+                pageIndex,
+                pageSize,
+                totalCount,
+                pageNumber
             },
             users = _mapper.Map<List<UserDto>>(users)
         };
@@ -60,7 +60,6 @@ public class UserService : IUserService
     public async Task<int> CreateUser(API.Models.User user)
     {
         User newUser = _mapper.Map<User>(user);
-        newUser.Password = "DefaultPassword";
         try
         {
             await _userRepository.AddAsync(newUser);

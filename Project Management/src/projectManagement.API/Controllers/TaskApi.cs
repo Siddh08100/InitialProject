@@ -38,7 +38,7 @@ namespace projectManagement.API.Controllers
         /// <response code="400">Bad Request</response>
         /// <response code="0">Unexpected error</response>
         [HttpPost]
-        [Route("/v1/Tasks")]
+        [Route("Tasks")]
         [Consumes("application/json")]
         [ValidateModelState]
         [SwaggerOperation("CreateTask")]
@@ -54,7 +54,7 @@ namespace projectManagement.API.Controllers
         /// <response code="404">Task not found</response>
         /// <response code="0">Unexpected error</response>
         [HttpGet]
-        [Route("/v1/Tasks/{id}")]
+        [Route("Tasks/{id}")]
         [ValidateModelState]
         [SwaggerOperation("GetTaskById")]
         [SwaggerResponse(statusCode: 200, type: typeof(Models.Task), description: "successful operation")]
@@ -75,7 +75,7 @@ namespace projectManagement.API.Controllers
         /// <response code="200">OK</response>
         /// <response code="0">Unexpected error</response>
         [HttpGet]
-        [Route("/v1/Tasks")]
+        [Route("Tasks")]
         [ValidateModelState]
         [SwaggerOperation("GetTasks")]
         [SwaggerResponse(statusCode: 200, type: typeof(GetTasks200Response), description: "OK")]
@@ -91,7 +91,7 @@ namespace projectManagement.API.Controllers
         /// <response code="404">Task not found</response>
         /// <response code="0">Unexpected error</response>
         [HttpPut]
-        [Route("/v1/Tasks")]
+        [Route("Tasks")]
         [Consumes("application/json")]
         [ValidateModelState]
         [SwaggerOperation("UpdateTask")]

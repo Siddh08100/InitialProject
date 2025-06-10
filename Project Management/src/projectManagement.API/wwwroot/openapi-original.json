@@ -824,6 +824,7 @@
         "example" : {
           "firstName" : "John",
           "lastName" : "Doe",
+          "password" : "password123",
           "role" : "TSE",
           "id" : 1,
           "userName" : "JohnDoe@123",
@@ -854,9 +855,14 @@
           "role" : {
             "example" : "TSE",
             "type" : "string"
+          },
+          "password" : {
+            "example" : "password123",
+            "format" : "password",
+            "type" : "string"
           }
         },
-        "required" : [ "email", "firstName", "lastName", "userName" ],
+        "required" : [ "email", "firstName", "lastName", "password", "userName" ],
         "type" : "object"
       },
       "Project" : {
@@ -987,6 +993,7 @@
           "users" : [ {
             "firstName" : "John",
             "lastName" : "Doe",
+            "password" : "password123",
             "role" : "TSE",
             "id" : 1,
             "userName" : "JohnDoe@123",
@@ -994,6 +1001,7 @@
           }, {
             "firstName" : "John",
             "lastName" : "Doe",
+            "password" : "password123",
             "role" : "TSE",
             "id" : 1,
             "userName" : "JohnDoe@123",

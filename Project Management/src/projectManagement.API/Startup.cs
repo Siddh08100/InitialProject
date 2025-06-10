@@ -47,9 +47,14 @@ namespace projectManagement.API
             services.AddDbContext<ProjectManagementContext>(options =>
         options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
 
-        services.AddAutoMapper(typeof(mapper));
+        services.AddAutoMapper(typeof(Mapper));
         services.AddScoped<Application.Interfaces.IUserService,Application.Services.UserService>();
+        services.AddScoped<Application.Interfaces.IProjectService,Application.Services.ProjectService>();
+        services.AddScoped<Application.Interfaces.ITaskService,Application.Services.TaskService>();
+
         services.AddScoped<Application.Interfaces.IUserRepository,Infrastructure.Repository.UserRepository>();
+        services.AddScoped<Application.Interfaces.IProjectRepository,Infrastructure.Repository.ProjectRepository>();
+        services.AddScoped<Application.Interfaces.ITaskRepository,Infrastructure.Repository.TaskRepository>();
 
             // Add framework services.
             services

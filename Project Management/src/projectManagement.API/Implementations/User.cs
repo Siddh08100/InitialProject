@@ -36,10 +36,14 @@ public class User : UserApiController
     /// <response code="0">Unexpected error</response>
     public override async Task<IActionResult> CreateUser([FromBody] Models.User user)
     {
+        if (user.Id != 0)
+        {
+            return BadRequest(new { message = "User ID must be zero for creation" });
+        }
         int statusCode = await _userService.CreateUser(user);
         return statusCode switch
         {
-            201 => Ok(new { message = "User updated successfully" }),
+            201 => Ok(new { message = "User created successfully" }),
             400 => BadRequest(new { message = "Bad Request" }),
             _ => StatusCode(500, new { message = "Unexpected error occurred" }),
         };
@@ -56,7 +60,7 @@ public class User : UserApiController
     /// <response code="200">User deleted successfully</response>
     /// <response code="400">Bad Request</response>
     /// <response code="404">User not found</response>
-    /// /// <response code="0">Unexpected error</response>
+    /// <response code="0">Unexpected error</response>
     public override async Task<IActionResult> DeleteUser([FromRoute(Name = "id"), Required] long id)
     {
         int statusCode = await _userService.DeleteUser((int)id);
@@ -65,7 +69,7 @@ public class User : UserApiController
             200 => Ok(new { message = "User deleted successfully" }),
             400 => BadRequest(new { message = "Bad Request" }),
             404 => NotFound(new { message = "User not found" }),
-            _ => StatusCode(500, new { message = "Unexpected error occurred" }),
+            _ => StatusCode(0, new { message = "Unexpected error occurred" }),
         };
     }
 
@@ -75,12 +79,12 @@ public class User : UserApiController
 
     /// <summary>
     /// Find User by Id
-    /// /// </summary>
-    /// /// <param name="id">ID of user to find</param>
-    /// /// <response code="200">User found successfully</response>
-    /// /// <response code="400">Invalid user ID</response>
-    /// /// <response code="404">User not found</response>
-    /// /// <response code="0">Unexpected error</response>
+    /// </summary>
+    /// <param name="id">ID of user to find</param>
+    /// <response code="200">User found successfully</response>
+    /// <response code="400">Invalid user ID</response>
+    /// <response code="404">User not found</response>
+    /// <response code="0">Unexpected error</response>
     public override async Task<IActionResult> FindUserById([FromRoute(Name = "id"), Required] long id)
     {
         if (id <= 0)
@@ -126,18 +130,18 @@ public class User : UserApiController
 
     /// <summary>
     /// Get all users
-    /// /// </summary>
-    /// /// <param name="pageIndex">Page index</param>
-    /// /// <param name="pageSize">Page size</param>
-    /// /// <param name="totalCount">Total count</param>
-    /// /// <param name="pageNumber">Page number</param>
-    /// /// <response code="200">Returns a list of users</response>
-    /// /// <response code="400">Bad Request</response>
+    /// </summary>
+    /// <param name="pageIndex">Page index</param>
+    /// <param name="pageSize">Page size</param>
+    /// <param name="totalCount">Total count</param>
+    /// <param name="pageNumber">Page number</param>
+    /// <response code="200">Returns a list of users</response>
+    /// <response code="400">Bad Request</response>
     public override async Task<IActionResult> GetUsers(long? pageIndex, long? pageSize, long? totalCount, long? pageNumber)
     {
         try
         {
-            var response = await _userService.GetAllUsersAsync(pageIndex ?? 1, pageSize ?? 10, totalCount, pageNumber ?? 1);
+            var response = await _userService.GetAllUsersAsync(pageIndex ?? 1, pageSize ?? 10, pageNumber ?? 1);
             return Ok(response);
         }
         catch (Exception ex)

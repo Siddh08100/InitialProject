@@ -14,11 +14,11 @@ public class UserRepository : IUserRepository
         _context = context;
     }
 
-    public async Task<(long, List<User>)> GetAllAsync(long? pageIndex, long? pageSize, long? totalCount, long? pageNumber)
+    public async Task<(long, List<User>)> GetAllAsync(long pageIndex, long pageSize)
     {
         var query = await _context.Users.Where(u => u.IsDeleted == false).ToListAsync();
         long count = query.Count;
-        List<User> users = query.Skip((int)((pageIndex - 1) * pageSize)).Take((int)pageSize).ToList();
+        List<User> users = query.Skip((int)((pageIndex - 1) * pageSize)).Take((int)pageSize).OrderBy(u => u.Id).ToList();
         return (count, users);
     }
 

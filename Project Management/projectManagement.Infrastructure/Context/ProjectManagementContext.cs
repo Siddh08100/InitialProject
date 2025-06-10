@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using projectManagement.Domain.Entities;
 
 namespace projectManagement.Infrastructure.Context;
@@ -20,6 +21,19 @@ public class ProjectManagementContext : DbContext
         modelBuilder.Entity<User>()
             .HasIndex(u => u.Email)
             .IsUnique();
+
+        modelBuilder.Entity<Project>()
+            .Property(u => u.CreatedDate)
+            .HasDefaultValueSql("now()");
+
+
+        modelBuilder.Entity<Tasks>()
+            .Property(u => u.CreatedDate)
+            .HasDefaultValueSql("now()");
+
+        modelBuilder.Entity<Tasks>()
+            .HasIndex(u => u.CreatedDate);
+
     }
 
 }

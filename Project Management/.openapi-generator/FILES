@@ -28,8 +28,6 @@ src/projectManagement.API/Filters/GeneratePathParamsValidationFilter.cs
 src/projectManagement.API/Formatters/InputFormatterStream.cs
 src/projectManagement.API/OpenApi/TypeExtensions.cs
 src/projectManagement.API/appsettings.Development.json
-src/projectManagement.API/appsettings.json
-src/projectManagement.API/projectManagement.API.csproj
 src/projectManagement.API/wwwroot/README.md
 src/projectManagement.API/wwwroot/index.html
 src/projectManagement.API/wwwroot/openapi-original.json
