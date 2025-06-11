@@ -6,6 +6,7 @@ using System;
 using projectManagement.API.Controllers;
 using System.ComponentModel.DataAnnotations;
 using projectManagement.Application.DTO;
+using projectManagement.Application.StatusCodes;
 
 namespace projectManagement.API.Implementations;
 
@@ -15,6 +16,7 @@ namespace projectManagement.API.Implementations;
 public class User : UserApiController
 {
     private readonly IUserService _userService;
+    private readonly Enums _statusCode = new();
 
     /// <summary>
     /// Constructor for User API Implementation
@@ -155,3 +157,4 @@ public class User : UserApiController
 
     #endregion
 }
+

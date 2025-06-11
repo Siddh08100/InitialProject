@@ -2,6 +2,7 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using projectManagement.Application.DTO;
+using projectManagement.Application.StatusCodes;
 using projectManagement.Application.Interfaces;
 using projectManagement.Domain.Entities;
 
@@ -20,32 +21,37 @@ public class UserService : IUserService
     public async Task<object> GetAllUsersAsync(long pageIndex, long pageSize, long pageNumber)
     {
         (long totalCount, List<User> users) = await _userRepository.GetAllAsync(pageIndex, pageSize);
-        var result = new
+        UsersListsDto result = new()
         {
-            paging = new
+            Paging = new PagingDto
             {
-                pageIndex,
-                pageSize,
-                totalCount,
-                pageNumber
+                PageIndex = pageIndex,
+                PageSize = pageSize,
+                TotalCount = totalCount,
+                PageNumber = pageNumber
             },
-            users = _mapper.Map<List<UserDto>>(users)
+            Users = _mapper.Map<List<UserDto>>(users)
         };
         return result;
     }
 
     public async Task<int> UpdateUser(API.Models.User user)
     {
-        User? existingUser = await _userRepository.FindByIdAsync(user.Id);
-        if (existingUser == null)
+        if (user.Id == 0)
         {
-            return 404; // Not Found
+            return 400; // Bad Request
+        }
+        User? existingUser = await _userRepository.FindByIdAsync(user.Id);
+        if (existingUser?.Id == 0 || existingUser == null)
+        {
+            return 404; // User Not Found
         }
         existingUser.FirstName = user.FirstName;
         existingUser.LastName = user.LastName;
         existingUser.Email = user.Email;
         existingUser.UserName = user.UserName;
         existingUser.Role = user.Role;
+        existingUser.Password = user.Password;
         try
         {
             await _userRepository.UpdateAsync(existingUser);
@@ -54,14 +60,14 @@ public class UserService : IUserService
         {
             return 400; // Bad Request
         }
-        return 200; // OK
+        return 200; // User Updated Successfully
     }
 
     public async Task<int> CreateUser(API.Models.User user)
     {
-        User newUser = _mapper.Map<User>(user);
         try
         {
+            User newUser = _mapper.Map<User>(user);
             await _userRepository.AddAsync(newUser);
         }
         catch (Exception)
@@ -80,6 +86,10 @@ public class UserService : IUserService
 
     public async Task<int> DeleteUser(int id)
     {
+        if (id <= 0)
+        {
+            return 400; // Bad Request
+        }
         User? existingUser = await _userRepository.FindByIdAsync(id);
         if (existingUser == null)
         {
