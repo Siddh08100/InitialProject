@@ -7,7 +7,7 @@ using projectManagement.Application.DTO;
 using projectManagement.Application.Interfaces;
 using projectManagement.Application.Services;
 
-namespace projectManagement.UserServiceTest;
+namespace projectManagement.Users;
 
 public class UserServiceTest
 {
