@@ -32,6 +32,7 @@ namespace projectManagement.Infrastructure.Middleware
 
                 Console.WriteLine("----------------------------------------");
                 Console.WriteLine($"Request path: {request.Path}");
+                Console.WriteLine($"Request Method: {request.Method}");
                 Console.WriteLine($"Request content type: {context.Request.Headers["Accept"]}");
                 Console.WriteLine($"Response type: {response.ContentType}");
                 Console.WriteLine($"Response StatusCode: {context.Response.StatusCode}");

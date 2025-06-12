@@ -61,6 +61,6 @@ public class ProjectRepository : IProjectRepository
 
     public async Task<UserProjectMapping?> GetUserProjectMappingAsync(int userId, int projectId)
     {
-        return await _context.UserProjectMappings.FirstOrDefaultAsync(up => up.UserId == userId && up.ProjectId == projectId && up.IsDeleted == false);
+        return await _context.UserProjectMappings.FirstOrDefaultAsync(up => up.UserId == userId && up.ProjectId == projectId && (up.IsDeleted == false || up.IsDeleted == null));
     }
 }

@@ -35,10 +35,6 @@ public class Tasks : TaskApiController
     /// <response code="0">Unexpected error</response>
     public override async Task<IActionResult> CreateTask([FromBody] CreateTaskRequest createTaskRequest)
     {
-        if (createTaskRequest.Id != 0)
-        {
-            return BadRequest(new { message = "Task ID must be zero for creation" });
-        }
         int statusCode = await _taskService.CreateTask(createTaskRequest);
         return statusCode switch
         {
@@ -88,14 +84,12 @@ public class Tasks : TaskApiController
     /// <param name="userId">User Id</param>
     /// <param name="projectId">Project Id</param>
     /// <returns>List of Tasks</returns>
-    public override async Task<IActionResult> GetTasks([FromQuery(Name = "pageIndex")] long? pageIndex, [FromQuery(Name = "pageSize")] long? pageSize, [FromQuery(Name = "totalCount")] long? totalCount, [FromQuery(Name = "pageNumber")] long? pageNumber, [FromQuery(Name = "status")] string status, [FromQuery(Name = "userId")] long? userId, [FromQuery(Name = "projectId")] long? projectId)
+    public override async Task<IActionResult> GetTasks([FromQuery(Name = "pageIndex")] long? pageIndex, [FromQuery(Name = "pageSize")] long? pageSize,[FromQuery(Name = "status")] string status, [FromQuery(Name = "userId")] long? userId, [FromQuery(Name = "projectId")] long? projectId)
     {
         FilterDto filter = new()
         {
             PageIndex = (int?)pageIndex ?? 1,
             PageSize = (int?)pageSize ?? 10,
-            TotalCount = (int?)totalCount,
-            PageNumber = (int?)pageNumber ?? 1,
             Status = status,
             UserId = (int?)userId,
             ProjectId = (int?)projectId,

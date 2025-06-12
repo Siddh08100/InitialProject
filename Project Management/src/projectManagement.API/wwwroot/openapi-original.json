@@ -45,28 +45,6 @@
             "type" : "integer"
           },
           "style" : "form"
-        }, {
-          "explode" : true,
-          "in" : "query",
-          "name" : "totalCount",
-          "required" : false,
-          "schema" : {
-            "default" : 1,
-            "format" : "int64",
-            "type" : "integer"
-          },
-          "style" : "form"
-        }, {
-          "explode" : true,
-          "in" : "query",
-          "name" : "pageNumber",
-          "required" : false,
-          "schema" : {
-            "default" : 1,
-            "format" : "int64",
-            "type" : "integer"
-          },
-          "style" : "form"
         } ],
         "responses" : {
           "200" : {
@@ -99,7 +77,7 @@
           "content" : {
             "application/json" : {
               "schema" : {
-                "$ref" : "#/components/schemas/User"
+                "$ref" : "#/components/schemas/CreateUser"
               }
             }
           },
@@ -107,13 +85,6 @@
         },
         "responses" : {
           "201" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/User"
-                }
-              }
-            },
             "description" : "User created successfully"
           },
           "400" : {
@@ -152,13 +123,6 @@
         },
         "responses" : {
           "200" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/User"
-                }
-              }
-            },
             "description" : "User updated successfully"
           },
           "400" : {
@@ -306,28 +270,6 @@
         }, {
           "explode" : true,
           "in" : "query",
-          "name" : "totalCount",
-          "required" : false,
-          "schema" : {
-            "default" : 1,
-            "format" : "int64",
-            "type" : "integer"
-          },
-          "style" : "form"
-        }, {
-          "explode" : true,
-          "in" : "query",
-          "name" : "pageNumber",
-          "required" : false,
-          "schema" : {
-            "default" : 1,
-            "format" : "int64",
-            "type" : "integer"
-          },
-          "style" : "form"
-        }, {
-          "explode" : true,
-          "in" : "query",
           "name" : "status",
           "required" : false,
           "schema" : {
@@ -401,7 +343,7 @@
           "content" : {
             "application/json" : {
               "schema" : {
-                "$ref" : "#/components/schemas/Project"
+                "$ref" : "#/components/schemas/CreateProject"
               }
             }
           },
@@ -409,13 +351,6 @@
         },
         "responses" : {
           "201" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/Project"
-                }
-              }
-            },
             "description" : "Project created successfully"
           },
           "400" : {
@@ -454,13 +389,6 @@
         },
         "responses" : {
           "200" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/Project"
-                }
-              }
-            },
             "description" : "Project updated successfully"
           },
           "400" : {
@@ -584,28 +512,6 @@
           "required" : false,
           "schema" : {
             "default" : 10,
-            "format" : "int64",
-            "type" : "integer"
-          },
-          "style" : "form"
-        }, {
-          "explode" : true,
-          "in" : "query",
-          "name" : "totalCount",
-          "required" : false,
-          "schema" : {
-            "default" : 1,
-            "format" : "int64",
-            "type" : "integer"
-          },
-          "style" : "form"
-        }, {
-          "explode" : true,
-          "in" : "query",
-          "name" : "pageNumber",
-          "required" : false,
-          "schema" : {
-            "default" : 1,
             "format" : "int64",
             "type" : "integer"
           },
@@ -865,6 +771,46 @@
         "required" : [ "email", "firstName", "lastName", "password", "userName" ],
         "type" : "object"
       },
+      "CreateUser" : {
+        "example" : {
+          "firstName" : "John",
+          "lastName" : "Doe",
+          "password" : "password123",
+          "role" : "TSE",
+          "userName" : "JohnDoe@123",
+          "email" : "johnDoe@gmail.com"
+        },
+        "properties" : {
+          "firstName" : {
+            "example" : "John",
+            "type" : "string"
+          },
+          "lastName" : {
+            "example" : "Doe",
+            "type" : "string"
+          },
+          "userName" : {
+            "example" : "JohnDoe@123",
+            "type" : "string"
+          },
+          "email" : {
+            "example" : "johnDoe@gmail.com",
+            "format" : "email",
+            "type" : "string"
+          },
+          "role" : {
+            "example" : "TSE",
+            "type" : "string"
+          },
+          "password" : {
+            "example" : "password123",
+            "format" : "password",
+            "type" : "string"
+          }
+        },
+        "required" : [ "email", "firstName", "lastName", "password", "userName" ],
+        "type" : "object"
+      },
       "Project" : {
         "example" : {
           "createdDate" : "2000-01-23T04:56:07.000+00:00",
@@ -881,6 +827,45 @@
             "format" : "int64",
             "type" : "integer"
           },
+          "name" : {
+            "example" : "Project Management System",
+            "type" : "string"
+          },
+          "description" : {
+            "example" : "Manage Projects",
+            "type" : "string"
+          },
+          "status" : {
+            "example" : "Pending",
+            "type" : "string"
+          },
+          "createdBy" : {
+            "example" : 1,
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "createdDate" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "updatedDate" : {
+            "format" : "date-time",
+            "type" : "string"
+          }
+        },
+        "required" : [ "description", "name", "status" ],
+        "type" : "object"
+      },
+      "CreateProject" : {
+        "example" : {
+          "createdDate" : "2000-01-23T04:56:07.000+00:00",
+          "createdBy" : 1,
+          "name" : "Project Management System",
+          "description" : "Manage Projects",
+          "updatedDate" : "2000-01-23T04:56:07.000+00:00",
+          "status" : "Pending"
+        },
+        "properties" : {
           "name" : {
             "example" : "Project Management System",
             "type" : "string"
@@ -1161,11 +1146,6 @@
       },
       "createTask_request" : {
         "properties" : {
-          "id" : {
-            "example" : 1,
-            "format" : "int64",
-            "type" : "integer"
-          },
           "title" : {
             "example" : "Task Title 1",
             "type" : "string"

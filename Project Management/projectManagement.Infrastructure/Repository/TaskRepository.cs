@@ -20,11 +20,11 @@ public class TaskRepository : ITaskRepository
              .OrderBy(t => t.Id).Select(s => new TasksDto
              {
                  Id = s.Id,
-                 ProjectName = s.Project.Name,
+                 ProjectName = s.Project.Name ?? " ",
                  Title = s.Title,
                  Description = s.Description,
                  Status = s.Status,
-                 UserName = s.AssignedToUser.FirstName + " " + s.AssignedToUser.LastName,
+                 UserName = s.AssignedToUser.FirstName + " " + s.AssignedToUser.LastName ?? "",
                  UserId = s.AssignedTo ?? 0,
                  DueDate = s.DueDate ?? DateTime.MaxValue,
              }).ToListAsync();
@@ -41,7 +41,6 @@ public class TaskRepository : ITaskRepository
 
     public async Task<TasksDto?> GetTaskByIdAsync(int id)
     {
-        Console.WriteLine($"Fetching task with ID: {id}");
         return await _context.Tasks.Where(t => t.Id == id && (t.IsDeleted == false || t.IsDeleted == null))
             .Select(s => new TasksDto
             {

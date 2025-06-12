@@ -7,6 +7,7 @@ using projectManagement.API.Controllers;
 using System.ComponentModel.DataAnnotations;
 using projectManagement.Application.DTO;
 using projectManagement.Application.StatusCodes;
+using projectManagement.API.Models;
 
 namespace projectManagement.API.Implementations;
 
@@ -36,13 +37,9 @@ public class User : UserApiController
     /// <response code="201">User created successfully</response>
     /// <response code="400">Bad Request</response>
     /// <response code="0">Unexpected error</response>
-    public override async Task<IActionResult> CreateUser([FromBody] Models.User user)
+    public override async Task<IActionResult> CreateUser([FromBody] CreateUser createUser)
     {
-        if (user.Id != 0)
-        {
-            return BadRequest(new { message = "User ID must be zero for creation" });
-        }
-        int statusCode = await _userService.CreateUser(user);
+        int statusCode = await _userService.CreateUser(createUser);
         return statusCode switch
         {
             201 => Ok(new { message = "User created successfully" }),
@@ -139,11 +136,11 @@ public class User : UserApiController
     /// <param name="pageNumber">Page number</param>
     /// <response code="200">Returns a list of users</response>
     /// <response code="400">Bad Request</response>
-    public override async Task<IActionResult> GetUsers(long? pageIndex, long? pageSize, long? totalCount, long? pageNumber)
+    public override async Task<IActionResult> GetUsers(long? pageIndex, long? pageSize)
     {
         try
         {
-            var response = await _userService.GetAllUsersAsync(pageIndex ?? 1, pageSize ?? 10, pageNumber ?? 1);
+            var response = await _userService.GetAllUsersAsync(pageIndex ?? 1, pageSize ?? 10);
             return Ok(response);
         }
         catch (Exception ex)

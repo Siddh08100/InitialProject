@@ -1,7 +1,9 @@
 namespace projectManagement.Application.DTO;
 
-public class UsersListsDto
+
+public class GetAllDto<T>
 {
     public PagingDto Paging { get; set; } = null!;
-    public List<UserDto> Users { get; set; } = null!;
+    public List<T> List { get; set; } = null!;
 }
+

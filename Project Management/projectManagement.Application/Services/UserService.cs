@@ -1,8 +1,6 @@
 
 using AutoMapper;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using projectManagement.Application.DTO;
-using projectManagement.Application.StatusCodes;
 using projectManagement.Application.Interfaces;
 using projectManagement.Domain.Entities;
 
@@ -18,19 +16,19 @@ public class UserService : IUserService
         _mapper = mapper;
     }
 
-    public async Task<object> GetAllUsersAsync(long pageIndex, long pageSize, long pageNumber)
+    public async Task<object> GetAllUsersAsync(long pageIndex, long pageSize)
     {
         (long totalCount, List<User> users) = await _userRepository.GetAllAsync(pageIndex, pageSize);
-        UsersListsDto result = new()
+        GetAllDto<UserDto> result = new()
         {
             Paging = new PagingDto
             {
                 PageIndex = pageIndex,
                 PageSize = pageSize,
                 TotalCount = totalCount,
-                PageNumber = pageNumber
+                PageNumber = (int)Math.Ceiling((decimal)((double)totalCount / pageSize))
             },
-            Users = _mapper.Map<List<UserDto>>(users)
+            List = _mapper.Map<List<UserDto>>(users)
         };
         return result;
     }
@@ -41,19 +39,19 @@ public class UserService : IUserService
         {
             return 400; // Bad Request
         }
-        User? existingUser = await _userRepository.FindByIdAsync(user.Id);
-        if (existingUser?.Id == 0 || existingUser == null)
-        {
-            return 404; // User Not Found
-        }
-        existingUser.FirstName = user.FirstName;
-        existingUser.LastName = user.LastName;
-        existingUser.Email = user.Email;
-        existingUser.UserName = user.UserName;
-        existingUser.Role = user.Role;
-        existingUser.Password = user.Password;
         try
         {
+            User? existingUser = await _userRepository.FindByIdAsync(user.Id);
+            if (existingUser?.Id == 0 || existingUser == null)
+            {
+                return 404; // User Not Found
+            }
+            existingUser.FirstName = user.FirstName;
+            existingUser.LastName = user.LastName;
+            existingUser.Email = user.Email;
+            existingUser.UserName = user.UserName;
+            existingUser.Role = user.Role;
+            existingUser.Password = user.Password;
             await _userRepository.UpdateAsync(existingUser);
         }
         catch (Exception)
@@ -63,15 +61,16 @@ public class UserService : IUserService
         return 200; // User Updated Successfully
     }
 
-    public async Task<int> CreateUser(API.Models.User user)
+    public async Task<int> CreateUser(API.Models.CreateUser user)
     {
         try
         {
             User newUser = _mapper.Map<User>(user);
             await _userRepository.AddAsync(newUser);
         }
-        catch (Exception)
+        catch (Exception ex)
         {
+            Console.WriteLine(ex);
             return 400; // Bad Request
         }
         return 201; // Created
@@ -90,14 +89,14 @@ public class UserService : IUserService
         {
             return 400; // Bad Request
         }
-        User? existingUser = await _userRepository.FindByIdAsync(id);
-        if (existingUser == null)
-        {
-            return 404; // Not Found
-        }
-        existingUser.IsDeleted = true;
         try
         {
+            User? existingUser = await _userRepository.FindByIdAsync(id);
+            if (existingUser == null)
+            {
+                return 404; // Not Found
+            }
+            existingUser.IsDeleted = true;
             await _userRepository.UpdateAsync(existingUser);
         }
         catch (Exception)

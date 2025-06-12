@@ -67,8 +67,6 @@ namespace projectManagement.API.Controllers
         /// <remarks>Get a list of tasks</remarks>
         /// <param name="pageIndex"></param>
         /// <param name="pageSize"></param>
-        /// <param name="totalCount"></param>
-        /// <param name="pageNumber"></param>
         /// <param name="status"></param>
         /// <param name="userId"></param>
         /// <param name="projectId"></param>
@@ -80,7 +78,7 @@ namespace projectManagement.API.Controllers
         [SwaggerOperation("GetTasks")]
         [SwaggerResponse(statusCode: 200, type: typeof(GetTasks200Response), description: "OK")]
         [SwaggerResponse(statusCode: 0, type: typeof(Error), description: "Unexpected error")]
-        public abstract Task<IActionResult> GetTasks([FromQuery (Name = "pageIndex")]long? pageIndex, [FromQuery (Name = "pageSize")]long? pageSize, [FromQuery (Name = "totalCount")]long? totalCount, [FromQuery (Name = "pageNumber")]long? pageNumber, [FromQuery (Name = "status")]string status, [FromQuery (Name = "userId")]long? userId, [FromQuery (Name = "projectId")]long? projectId);
+        public abstract Task<IActionResult> GetTasks([FromQuery (Name = "pageIndex")]long? pageIndex, [FromQuery (Name = "pageSize")]long? pageSize, [FromQuery (Name = "status")]string status, [FromQuery (Name = "userId")]long? userId, [FromQuery (Name = "projectId")]long? projectId);
 
         /// <summary>
         /// Update Task

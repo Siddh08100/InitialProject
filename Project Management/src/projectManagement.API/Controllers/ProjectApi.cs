@@ -33,7 +33,7 @@ namespace projectManagement.API.Controllers
         /// <summary>
         /// Create Project
         /// </summary>
-        /// <param name="project"></param>
+        /// <param name="createProject"></param>
         /// <response code="201">Project created successfully</response>
         /// <response code="400">Bad Request</response>
         /// <response code="0">Unexpected error</response>
@@ -42,9 +42,8 @@ namespace projectManagement.API.Controllers
         [Consumes("application/json")]
         [ValidateModelState]
         [SwaggerOperation("CreateProject")]
-        [SwaggerResponse(statusCode: 201, type: typeof(Project), description: "Project created successfully")]
         [SwaggerResponse(statusCode: 400, type: typeof(Error), description: "Bad Request")]
-        public abstract Task<IActionResult> CreateProject([FromBody]Project project);
+        public abstract Task<IActionResult> CreateProject([FromBody]CreateProject createProject);
 
         /// <summary>
         /// Delete Project
@@ -67,8 +66,6 @@ namespace projectManagement.API.Controllers
         /// <remarks>Get a list of projects</remarks>
         /// <param name="pageIndex"></param>
         /// <param name="pageSize"></param>
-        /// <param name="totalCount"></param>
-        /// <param name="pageNumber"></param>
         /// <param name="status"></param>
         /// <param name="userId"></param>
         /// <param name="projectId"></param>
@@ -81,7 +78,7 @@ namespace projectManagement.API.Controllers
         [SwaggerOperation("GetProjects")]
         [SwaggerResponse(statusCode: 200, type: typeof(GetProjects200Response), description: "OK")]
         [SwaggerResponse(statusCode: 0, type: typeof(Error), description: "Unexpected error")]
-        public abstract Task<IActionResult> GetProjects([FromQuery (Name = "pageIndex")]long? pageIndex, [FromQuery (Name = "pageSize")]long? pageSize, [FromQuery (Name = "totalCount")]long? totalCount, [FromQuery (Name = "pageNumber")]long? pageNumber, [FromQuery (Name = "status")]string status, [FromQuery (Name = "userId")]long? userId, [FromQuery (Name = "projectId")]long? projectId, [FromQuery (Name = "role")]string role);
+        public abstract Task<IActionResult> GetProjects([FromQuery (Name = "pageIndex")]long? pageIndex, [FromQuery (Name = "pageSize")]long? pageSize, [FromQuery (Name = "status")]string status, [FromQuery (Name = "userId")]long? userId, [FromQuery (Name = "projectId")]long? projectId, [FromQuery (Name = "role")]string role);
 
         /// <summary>
         /// Update Project
@@ -96,7 +93,6 @@ namespace projectManagement.API.Controllers
         [Consumes("application/json", "application/xml")]
         [ValidateModelState]
         [SwaggerOperation("UpdateProject")]
-        [SwaggerResponse(statusCode: 200, type: typeof(Project), description: "Project updated successfully")]
         [SwaggerResponse(statusCode: 400, type: typeof(Error), description: "Bad Request")]
         public abstract Task<IActionResult> UpdateProject([FromBody]Project project);
 

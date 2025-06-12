@@ -3,3 +3,4 @@ src/projectManagement.API/Program.cs
 src/projectManagement.API/Startup.cs
 src/projectManagement.API/appsettings.json
 src/projectManagement.API/Properties/launchSettings.json
+projectManagement.API.sln

@@ -33,13 +33,9 @@ public class Project : ProjectApiController
     /// <response code="201">Project created successfully</response>
     /// <response code="400">Bad Request</response>
     /// <response code="0">Unexpected error</response>
-    public override async Task<IActionResult> CreateProject([FromBody] Models.Project project)
+    public override async Task<IActionResult> CreateProject([FromBody] CreateProject createProject)
     {
-        if (project.Id != 0)
-        {
-            return BadRequest(new { message = "Project ID must be zero for creation" });
-        }
-        int statusCode = await _projectService.CreateProject(project);
+        int statusCode = await _projectService.CreateProject(createProject);
         return statusCode switch
         {
             201 => Ok(new { message = "Project created successfully" }),
@@ -51,6 +47,7 @@ public class Project : ProjectApiController
     #endregion
 
     #region Delete Project
+
 
     /// <summary>
     /// Delete Project
@@ -89,14 +86,13 @@ public class Project : ProjectApiController
     /// <param name="role"></param>
     /// <response code="200">Returns a list of projects</response>
     /// <response code="0">error occured</response>
-    public override async Task<IActionResult> GetProjects([FromQuery(Name = "pageIndex")] long? pageIndex, [FromQuery(Name = "pageSize")] long? pageSize, [FromQuery(Name = "totalCount")] long? totalCount, [FromQuery(Name = "pageNumber")] long? pageNumber, [FromQuery(Name = "status")] string status, [FromQuery(Name = "userId")] long? userId, [FromQuery(Name = "projectId")] long? projectId, [FromQuery(Name = "role")] string role)
+
+    public override async Task<IActionResult> GetProjects([FromQuery(Name = "pageIndex")] long? pageIndex, [FromQuery(Name = "pageSize")] long? pageSize, [FromQuery(Name = "status")] string status, [FromQuery(Name = "userId")] long? userId, [FromQuery(Name = "projectId")] long? projectId, [FromQuery(Name = "role")] string role)
     {
         FilterDto filter = new()
         {
             PageIndex = (int?)pageIndex ?? 1,
             PageSize = (int?)pageSize ?? 10,
-            TotalCount = (int?)totalCount,
-            PageNumber = (int?)pageNumber ?? 1,
             Status = status,
             UserId = (int?)userId,
             ProjectId = (int?)projectId,
@@ -119,6 +115,7 @@ public class Project : ProjectApiController
     #endregion
 
     #region Update Project
+
 
     /// <summary>
     /// Update Project

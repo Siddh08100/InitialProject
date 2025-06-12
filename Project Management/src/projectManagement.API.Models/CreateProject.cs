@@ -24,20 +24,20 @@ namespace projectManagement.API.Models
     /// 
     /// </summary>
     [DataContract]
-    public partial class CreateTaskRequest : IEquatable<CreateTaskRequest>
+    public partial class CreateProject : IEquatable<CreateProject>
     {
         /// <summary>
-        /// Gets or Sets Title
+        /// Gets or Sets Name
         /// </summary>
-        /* <example>Task Title 1</example> */
+        /* <example>Project Management System</example> */
         [Required]
-        [DataMember(Name="title", EmitDefaultValue=false)]
-        public string Title { get; set; }
+        [DataMember(Name="name", EmitDefaultValue=false)]
+        public string Name { get; set; }
 
         /// <summary>
         /// Gets or Sets Description
         /// </summary>
-        /* <example>Description of Task 1</example> */
+        /* <example>Manage Projects</example> */
         [Required]
         [DataMember(Name="description", EmitDefaultValue=false)]
         public string Description { get; set; }
@@ -45,31 +45,29 @@ namespace projectManagement.API.Models
         /// <summary>
         /// Gets or Sets Status
         /// </summary>
-        /* <example>In Progress</example> */
+        /* <example>Pending</example> */
         [Required]
         [DataMember(Name="status", EmitDefaultValue=false)]
         public string Status { get; set; }
 
         /// <summary>
-        /// Gets or Sets AssignedTo
+        /// Gets or Sets CreatedBy
         /// </summary>
         /* <example>1</example> */
-        [DataMember(Name="assignedTo", EmitDefaultValue=true)]
-        public long AssignedTo { get; set; }
+        [DataMember(Name="createdBy", EmitDefaultValue=true)]
+        public long CreatedBy { get; set; }
 
         /// <summary>
-        /// Gets or Sets ProjectId
+        /// Gets or Sets CreatedDate
         /// </summary>
-        /* <example>1</example> */
-        [DataMember(Name="projectId", EmitDefaultValue=true)]
-        public long ProjectId { get; set; }
+        [DataMember(Name="createdDate", EmitDefaultValue=true)]
+        public DateTime CreatedDate { get; set; }
 
         /// <summary>
-        /// Gets or Sets DueDate
+        /// Gets or Sets UpdatedDate
         /// </summary>
-        [Required]
-        [DataMember(Name="dueDate", EmitDefaultValue=true)]
-        public DateTime DueDate { get; set; }
+        [DataMember(Name="updatedDate", EmitDefaultValue=true)]
+        public DateTime UpdatedDate { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -78,13 +76,13 @@ namespace projectManagement.API.Models
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class CreateTaskRequest {\n");
-            sb.Append("  Title: ").Append(Title).Append("\n");
+            sb.Append("class CreateProject {\n");
+            sb.Append("  Name: ").Append(Name).Append("\n");
             sb.Append("  Description: ").Append(Description).Append("\n");
             sb.Append("  Status: ").Append(Status).Append("\n");
-            sb.Append("  AssignedTo: ").Append(AssignedTo).Append("\n");
-            sb.Append("  ProjectId: ").Append(ProjectId).Append("\n");
-            sb.Append("  DueDate: ").Append(DueDate).Append("\n");
+            sb.Append("  CreatedBy: ").Append(CreatedBy).Append("\n");
+            sb.Append("  CreatedDate: ").Append(CreatedDate).Append("\n");
+            sb.Append("  UpdatedDate: ").Append(UpdatedDate).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -107,24 +105,24 @@ namespace projectManagement.API.Models
         {
             if (obj is null) return false;
             if (ReferenceEquals(this, obj)) return true;
-            return obj.GetType() == GetType() && Equals((CreateTaskRequest)obj);
+            return obj.GetType() == GetType() && Equals((CreateProject)obj);
         }
 
         /// <summary>
-        /// Returns true if CreateTaskRequest instances are equal
+        /// Returns true if CreateProject instances are equal
         /// </summary>
-        /// <param name="other">Instance of CreateTaskRequest to be compared</param>
+        /// <param name="other">Instance of CreateProject to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(CreateTaskRequest other)
+        public bool Equals(CreateProject other)
         {
             if (other is null) return false;
             if (ReferenceEquals(this, other)) return true;
 
             return 
                 (
-                    Title == other.Title ||
-                    Title != null &&
-                    Title.Equals(other.Title)
+                    Name == other.Name ||
+                    Name != null &&
+                    Name.Equals(other.Name)
                 ) && 
                 (
                     Description == other.Description ||
@@ -137,19 +135,19 @@ namespace projectManagement.API.Models
                     Status.Equals(other.Status)
                 ) && 
                 (
-                    AssignedTo == other.AssignedTo ||
+                    CreatedBy == other.CreatedBy ||
                     
-                    AssignedTo.Equals(other.AssignedTo)
+                    CreatedBy.Equals(other.CreatedBy)
                 ) && 
                 (
-                    ProjectId == other.ProjectId ||
+                    CreatedDate == other.CreatedDate ||
                     
-                    ProjectId.Equals(other.ProjectId)
+                    CreatedDate.Equals(other.CreatedDate)
                 ) && 
                 (
-                    DueDate == other.DueDate ||
+                    UpdatedDate == other.UpdatedDate ||
                     
-                    DueDate.Equals(other.DueDate)
+                    UpdatedDate.Equals(other.UpdatedDate)
                 );
         }
 
@@ -163,18 +161,18 @@ namespace projectManagement.API.Models
             {
                 var hashCode = 41;
                 // Suitable nullity checks etc, of course :)
-                    if (Title != null)
-                    hashCode = hashCode * 59 + Title.GetHashCode();
+                    if (Name != null)
+                    hashCode = hashCode * 59 + Name.GetHashCode();
                     if (Description != null)
                     hashCode = hashCode * 59 + Description.GetHashCode();
                     if (Status != null)
                     hashCode = hashCode * 59 + Status.GetHashCode();
                     
-                    hashCode = hashCode * 59 + AssignedTo.GetHashCode();
+                    hashCode = hashCode * 59 + CreatedBy.GetHashCode();
                     
-                    hashCode = hashCode * 59 + ProjectId.GetHashCode();
+                    hashCode = hashCode * 59 + CreatedDate.GetHashCode();
                     
-                    hashCode = hashCode * 59 + DueDate.GetHashCode();
+                    hashCode = hashCode * 59 + UpdatedDate.GetHashCode();
                 return hashCode;
             }
         }
@@ -182,12 +180,12 @@ namespace projectManagement.API.Models
         #region Operators
         #pragma warning disable 1591
 
-        public static bool operator ==(CreateTaskRequest left, CreateTaskRequest right)
+        public static bool operator ==(CreateProject left, CreateProject right)
         {
             return Equals(left, right);
         }
 
-        public static bool operator !=(CreateTaskRequest left, CreateTaskRequest right)
+        public static bool operator !=(CreateProject left, CreateProject right)
         {
             return !Equals(left, right);
         }

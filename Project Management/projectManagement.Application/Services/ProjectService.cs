@@ -20,25 +20,25 @@ public class ProjectService : IProjectService
     public async Task<object> GetProjects(FilterDto filter)
     {
         (FilterDto filters, List<Domain.Entities.Project> projects) = await _projectRepository.GetProjectsAsync(filter);
-        var response = new
+        GetAllDto<ProjectDto> response = new()
         {
-            paging = new
+            Paging = new PagingDto
             {
-                pageIndex = filters.PageIndex,
-                pageSize = filters.PageSize,
-                totalCount = filters.TotalCount,
-                pageNumber = filters.PageNumber
+                PageIndex = (long)filter.PageIndex,
+                PageSize = (long)filter.PageSize,
+                TotalCount = (long)filter.TotalCount,
+                PageNumber = (int)Math.Ceiling((decimal)((double)filter.TotalCount / filter.PageSize))
             },
-            projects = _mapper.Map<List<ProjectDto>>(projects)
+            List = _mapper.Map<List<ProjectDto>>(projects)
         };
         return response;
     }
 
-    public async Task<int> CreateProject(API.Models.Project project)
+    public async Task<int> CreateProject(CreateProject project)
     {
-        Domain.Entities.Project newProject = _mapper.Map<Domain.Entities.Project>(project);
         try
         {
+            Domain.Entities.Project newProject = _mapper.Map<Domain.Entities.Project>(project);
             await _projectRepository.CreateAsync(newProject);
             return 201; // Project Created
         }
@@ -81,7 +81,7 @@ public class ProjectService : IProjectService
         try
         {
             Domain.Entities.Project? existingProject = await _projectRepository.GetByIdAsync((int)project.Id);
-            if (existingProject == null)
+            if (existingProject == null || existingProject.Id <= 0)
             {
                 return 404; // Not Found
             }
@@ -101,6 +101,10 @@ public class ProjectService : IProjectService
     // update role of user on particular project [owner,devloper,guest]
     public async Task<int> UpdateUserProjectStatus(UpdateUserProjectStatusRequest updateUserProjectStatusRequest)
     {
+        if (updateUserProjectStatusRequest == null || updateUserProjectStatusRequest.UserId <= 0 || updateUserProjectStatusRequest.ProjectId <= 0)
+        {
+            return 400; // Bad Request
+        }
         try
         {
             UserProjectMapping? userProject = await _projectRepository.GetUserProjectMappingAsync((int)updateUserProjectStatusRequest.UserId, (int)updateUserProjectStatusRequest.ProjectId);

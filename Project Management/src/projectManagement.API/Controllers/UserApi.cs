@@ -33,7 +33,7 @@ namespace projectManagement.API.Controllers
         /// <summary>
         /// Create User
         /// </summary>
-        /// <param name="user"></param>
+        /// <param name="createUser"></param>
         /// <response code="201">User created successfully</response>
         /// <response code="400">Bad Request</response>
         /// <response code="0">Unexpected error</response>
@@ -42,9 +42,8 @@ namespace projectManagement.API.Controllers
         [Consumes("application/json")]
         [ValidateModelState]
         [SwaggerOperation("CreateUser")]
-        [SwaggerResponse(statusCode: 201, type: typeof(User), description: "User created successfully")]
         [SwaggerResponse(statusCode: 400, type: typeof(Error), description: "Bad Request")]
-        public abstract Task<IActionResult> CreateUser([FromBody]User user);
+        public abstract Task<IActionResult> CreateUser([FromBody]CreateUser createUser);
 
         /// <summary>
         /// Delete User
@@ -83,8 +82,6 @@ namespace projectManagement.API.Controllers
         /// <remarks>Retrieve a list of users</remarks>
         /// <param name="pageIndex"></param>
         /// <param name="pageSize"></param>
-        /// <param name="totalCount"></param>
-        /// <param name="pageNumber"></param>
         /// <response code="200">OK</response>
         /// <response code="0">Unexpected error</response>
         [HttpGet]
@@ -93,7 +90,7 @@ namespace projectManagement.API.Controllers
         [SwaggerOperation("GetUsers")]
         [SwaggerResponse(statusCode: 200, type: typeof(GetUsers200Response), description: "OK")]
         [SwaggerResponse(statusCode: 0, type: typeof(Error), description: "Unexpected error")]
-        public abstract Task<IActionResult> GetUsers([FromQuery (Name = "pageIndex")]long? pageIndex, [FromQuery (Name = "pageSize")]long? pageSize, [FromQuery (Name = "totalCount")]long? totalCount, [FromQuery (Name = "pageNumber")]long? pageNumber);
+        public abstract Task<IActionResult> GetUsers([FromQuery (Name = "pageIndex")]long? pageIndex, [FromQuery (Name = "pageSize")]long? pageSize);
 
         /// <summary>
         /// Update User
@@ -108,7 +105,6 @@ namespace projectManagement.API.Controllers
         [Consumes("application/json", "application/xml")]
         [ValidateModelState]
         [SwaggerOperation("UpdateUser")]
-        [SwaggerResponse(statusCode: 200, type: typeof(User), description: "User updated successfully")]
         [SwaggerResponse(statusCode: 400, type: typeof(Error), description: "Bad Request")]
         public abstract Task<IActionResult> UpdateUser([FromBody]User user);
     }

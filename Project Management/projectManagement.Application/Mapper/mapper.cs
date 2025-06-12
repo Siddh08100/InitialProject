@@ -10,8 +10,9 @@ public class Mapper : Profile
     {
         CreateMap<Domain.Entities.User, DTO.UserDto>().ReverseMap();
         CreateMap<Domain.Entities.User, User>().ReverseMap();
-        CreateMap<Domain.Entities.Project, DTO.ProjectDto>().ReverseMap();
-        CreateMap<Domain.Entities.Project, Project>().ReverseMap();
+        CreateMap<Domain.Entities.User, CreateUser>().ReverseMap();
+        CreateMap<Domain.Entities.Project, ProjectDto>().ReverseMap();
+        CreateMap<Domain.Entities.Project, CreateProject>().ReverseMap();
         CreateMap<Domain.Entities.Tasks, CreateTaskRequest>().ReverseMap();
         CreateMap<Domain.Entities.Tasks, UpdateTaskRequest>().ReverseMap();
         CreateMap<TasksDto, UpdateTaskRequest>().ReverseMap();

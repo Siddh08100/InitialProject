@@ -32,9 +32,9 @@ public class UserServiceTest
         long pageNumber = 1;
         long pageSize = 10;
 
-        _mockUserService.Setup(us => us.GetAllUsersAsync(It.IsAny<long>(), It.IsAny<long>(), It.IsAny<long>())).ReturnsAsync(users);
+        _mockUserService.Setup(us => us.GetAllUsersAsync(It.IsAny<long>(), It.IsAny<long>())).ReturnsAsync(users);
 
-        var result = await _userApi.GetUsers(pageIndex, pageSize, null, pageNumber);
+        var result = await _userApi.GetUsers(pageIndex, pageSize);
 
         // Assert
         Assert.NotNull(result);
@@ -46,7 +46,6 @@ public class UserServiceTest
         // Arrange
         long pageIndex = 1;
         long pageSize = 10;
-        long pageNumber = 1;
         List<UserDto> userDtos = new()
         {
             new UserDto
@@ -82,7 +81,7 @@ public class UserServiceTest
                 PageIndex = pageIndex,
                 PageSize = pageSize,
                 TotalCount = user.Count,
-                PageNumber = pageNumber
+                PageNumber = (int)Math.Ceiling((decimal)((double)user.Count / pageSize))
             },
             Users = userDtos
         };
@@ -90,7 +89,7 @@ public class UserServiceTest
         // Act
         _mockUserRepository.Setup(us => us.GetAllAsync(pageIndex, pageSize)).ReturnsAsync((user.Count, user));
         _mockMapper.Setup(m => m.Map<List<UserDto>>(user)).Returns(userDtos);
-        UsersListsDto? result = await _userService.GetAllUsersAsync(pageIndex, pageSize, pageNumber) as UsersListsDto;
+        GetAllDto<UserDto>? result = await _userService.GetAllUsersAsync(pageIndex, pageSize) as GetAllDto<UserDto>;
 
         // Assert
         Assert.NotNull(result);
@@ -98,15 +97,15 @@ public class UserServiceTest
         Assert.Equal(expectedUsers.Paging.PageSize, result.Paging.PageSize);
         Assert.Equal(expectedUsers.Paging.TotalCount, result.Paging.TotalCount);
         Assert.Equal(expectedUsers.Paging.PageNumber, result.Paging.PageNumber);
-        Assert.Equal(expectedUsers.Users.Count, result.Users.Count);
+        Assert.Equal(expectedUsers.Users.Count, result.List.Count);
         for (int i = 0; i < expectedUsers.Users.Count; i++)
         {
-            Assert.Equal(expectedUsers.Users[i].Id, result.Users[i].Id);
-            Assert.Equal(expectedUsers.Users[i].FirstName, result.Users[i].FirstName);
-            Assert.Equal(expectedUsers.Users[i].LastName, result.Users[i].LastName);
-            Assert.Equal(expectedUsers.Users[i].UserName, result.Users[i].UserName);
-            Assert.Equal(expectedUsers.Users[i].Email, result.Users[i].Email);
-            Assert.Equal(expectedUsers.Users[i].Role, result.Users[i].Role);
+            Assert.Equal(expectedUsers.Users[i].Id, result.List[i].Id);
+            Assert.Equal(expectedUsers.Users[i].FirstName, result.List[i].FirstName);
+            Assert.Equal(expectedUsers.Users[i].LastName, result.List[i].LastName);
+            Assert.Equal(expectedUsers.Users[i].UserName, result.List[i].UserName);
+            Assert.Equal(expectedUsers.Users[i].Email, result.List[i].Email);
+            Assert.Equal(expectedUsers.Users[i].Role, result.List[i].Role);
         }
     }
 
@@ -243,9 +242,8 @@ public class UserServiceTest
     public async Task CreateUser_WithValidInput_ShouldCreateUser()
     {
         //Arrange
-        API.Models.User NewUserModel = new()
+        API.Models.CreateUser NewUserModel = new()
         {
-            Id = 0,
             FirstName = "Siddh",
             LastName = "Shah",
             UserName = "Siddh@301812",
@@ -286,9 +284,8 @@ public class UserServiceTest
     [Fact]
     public async Task CreateUser_WithAddAsyncThrowsException_ShouldReturnBadRequest()
     {
-        API.Models.User NewUserModel = new()
+        API.Models.CreateUser NewUserModel = new()
         {
-            Id = 0,
             FirstName = "Siddh",
             LastName = "Shah",
             UserName = "Siddh@301812",
@@ -324,9 +321,8 @@ public class UserServiceTest
     public async Task CreateUser_WithInValidMapping_ShouldThrowError()
     {
         //Arrange
-        API.Models.User NewUserModel = new()
+        API.Models.CreateUser NewUserModel = new()
         {
-            Id = 0,
             FirstName = "Siddh",
             LastName = "Shah",
             UserName = "Siddh@301812",
@@ -335,7 +331,7 @@ public class UserServiceTest
             Password = "Siddh@123"
         };
 
-        _mockMapper.Setup(m => m.Map<Domain.Entities.User>(It.IsAny<API.Models.User>()))
+        _mockMapper.Setup(m => m.Map<Domain.Entities.User>(It.IsAny<API.Models.CreateUser>()))
            .Throws(new AutoMapperMappingException("Mapping failed"));
 
         // Act

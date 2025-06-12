@@ -1,10 +1,11 @@
 README.md
 build.bat
 build.sh
-projectManagement.API.sln
 src/projectManagement.API.Models/.gitignore
 src/projectManagement.API.Models/Converters/CustomEnumConverter.cs
+src/projectManagement.API.Models/CreateProject.cs
 src/projectManagement.API.Models/CreateTaskRequest.cs
+src/projectManagement.API.Models/CreateUser.cs
 src/projectManagement.API.Models/Error.cs
 src/projectManagement.API.Models/GetProjects200Response.cs
 src/projectManagement.API.Models/GetTasks200Response.cs
