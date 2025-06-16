@@ -89,7 +89,7 @@ public class User : UserApiController
             return BadRequest(new { message = "Invalid user ID" });
         }
         UserDto userData = await _userService.FindUserById((int)id);
-        if (userData == null)
+        if (userData == null || userData.Id == 0)
         {
             return NotFound(new { message = "User not found" });
         }
@@ -154,4 +154,3 @@ public class User : UserApiController
 
     #endregion
 }
-

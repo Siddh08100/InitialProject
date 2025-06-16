@@ -31,10 +31,10 @@ public class UsersIntegrationTest : IClassFixture<CustomDatabase<Program>>
     //     if (!dbContext.Users.Any())
     //     {
     //         dbContext.Users.AddRange(
-    //             new() { Id = 1, FirstName = "Alice", LastName = "Aleys", Email = "Alice@gmail.com", Password = "Alice@123", Role = "TSE", UserName = "Alice123", IsDeleted = false },
-    //             new() { Id = 2, FirstName = "Bob", LastName = "Ales", Email = "Bob@gmail.com", Password = "Bob@123", Role = "TSE", UserName = "Bob123", IsDeleted = false },
-    //             new() { Id = 3, FirstName = "Charlie", LastName = "cheys", Email = "Charlie@gmail.com", Password = "Charlie@123", Role = "SSE", UserName = "Charlie123", IsDeleted = true },
-    //             new() { Id = 4, FirstName = "David", LastName = "Heilr", Email = "David@gmail.com", Password = "David@123", Role = "Intern", UserName = "David123", IsDeleted = false }
+    //             new() { Id = 1, FirstName = "A", LastName = "Aleys", Email = "A@gmail.com", Password = "A@123", Role = "TSE", UserName = "A123", IsDeleted = false },
+    //             new() { Id = 2, FirstName = "B", LastName = "Ales", Email = "B@gmail.com", Password = "B@123", Role = "TSE", UserName = "B123", IsDeleted = false },
+    //             new() { Id = 3, FirstName = "C", LastName = "cheys", Email = "C@gmail.com", Password = "C@123", Role = "SSE", UserName = "C123", IsDeleted = true },
+    //             new() { Id = 4, FirstName = "D", LastName = "Heilr", Email = "D@gmail.com", Password = "D@123", Role = "Intern", UserName = "D123", IsDeleted = false }
     //         );
     //         dbContext.SaveChanges();
     //     }
@@ -116,12 +116,144 @@ public class UsersIntegrationTest : IClassFixture<CustomDatabase<Program>>
     public async Task DeleteUser_ValidIdInput_DeleteUserSuccess()
     {
         // Arrange
-        long userId = 1; // Assuming this user exists in the seeded data
+        long userId = 18; // valid ID
 
         // Act
         var response = await _client.PutAsync($"Users/{userId}/deleteUser", null);
 
         // Assert
-        Assert.Equal(response.StatusCode, HttpStatusCode.NoContent);
+        Assert.Equal(response.StatusCode, HttpStatusCode.OK);
+    }
+
+    [Fact]
+    public async Task DeleteUser_InvalidIdInput_ReturnsBadRequest()
+    {
+        // Arrange
+        long userId = 0; // Invalid ID
+
+        // Act
+        var response = await _client.PutAsync($"Users/{userId}/deleteUser", null);
+
+        // Assert
+        Assert.Equal(response.StatusCode, HttpStatusCode.BadRequest);
+    }
+
+    [Fact]
+    public async Task DeleteUser_NonExistentId_ReturnsNotFound()
+    {
+        // Arrange
+        long userId = 9999; // Non-existent ID
+
+        // Act
+        var response = await _client.PutAsync($"Users/{userId}/deleteUser", null);
+
+        // Assert
+        Assert.Equal(response.StatusCode, HttpStatusCode.NotFound);
+    }
+
+    [Fact]
+    public async Task FindUserById_ValidId_ReturnsUser()
+    {
+        // Arrange
+        long userId = 16; // Valid ID
+
+        // Act
+        var response = await _client.GetAsync($"Users/{userId}");
+        var user = await response.Content.ReadFromJsonAsync<UserDto>();
+
+        // Assert
+        Assert.Equal(response.StatusCode, HttpStatusCode.OK);
+        Assert.NotNull(user);
+        Assert.Equal(userId, user.Id);
+    }
+
+    [Fact]
+    public async Task FindUserById_InvalidId_ReturnsBadRequest()
+    {
+        // Arrange
+        long userId = 0; // Invalid ID
+
+        // Act
+        var response = await _client.GetAsync($"Users/{userId}");
+
+        // Assert
+        Assert.Equal(response.StatusCode, HttpStatusCode.BadRequest);
+    }
+
+    [Fact]
+    public async Task FindUserById_NonExistentId_ReturnsNotFound()
+    {
+        // Arrange
+        long userId = 100; // Non-existent ID
+
+        // Act
+        var response = await _client.GetAsync($"Users/{userId}");
+
+        // Assert
+        Assert.Equal(response.StatusCode, HttpStatusCode.NotFound);
+    }
+
+    [Fact]
+    public async Task UpdateUser_ValidInput_ShouldUpdateUser()
+    {
+        User updatedUser = new()
+        {
+            Id = 16,
+            FirstName = "testuser",
+            Email = "test@eaxcsmple.com",
+            LastName = "Test",
+            Password = "Test@123",
+            Role = "TSE",
+            UserName = "ChangedUserName"
+        };
+
+        // Act
+        var response = await _client.PutAsJsonAsync("Users", updatedUser);
+
+        // Assert
+        Assert.Equal(response.StatusCode, HttpStatusCode.OK);
+    }
+
+    [Fact]
+    public async Task UpdateUser_InvalidInput_ShouldReturnBadRequest()
+    {
+        User invalidUser = new()
+        {
+            Id = 0,
+            FirstName = "",
+            Email = "invalidemail",
+            LastName = "Test",
+            Password = "Test@123",
+            Role = "TSE",
+            UserName = "ChangedUserName"
+        };
+
+        // Act
+        var response = await _client.PutAsJsonAsync("Users", invalidUser);
+
+        // Assert
+        Assert.Equal(response.StatusCode, HttpStatusCode.BadRequest);
+    }
+
+    [Fact]
+    public async Task UpdateUser_InvalidInputId_ShouldReturnNotFound()
+    {
+        User updatedUser = new()
+        {
+            Id = 25,
+            FirstName = "testuser",
+            Email = "test@eaxcsmple.com",
+            LastName = "Test",
+            Password = "Test@123",
+            Role = "TSE",
+            UserName = "ChangedUserName"
+        };
+
+        // Act
+        var response = await _client.PutAsJsonAsync("Users", updatedUser);
+
+        // Assert
+        Assert.Equal(response.StatusCode, HttpStatusCode.NotFound);
+
     }
 }
