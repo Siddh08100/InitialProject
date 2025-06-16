@@ -1,6 +1,4 @@
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using projectManagement.Domain.Entities;
 
 namespace projectManagement.Infrastructure.Context;

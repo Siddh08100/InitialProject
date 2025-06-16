@@ -45,9 +45,21 @@ namespace projectManagement.API
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddDbContext<ProjectManagementContext>(options =>
-        options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
+            //     services.AddDbContext<ProjectManagementContext>(options =>
+            // options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
+            var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 
+            if (env == "IntegrationTest")
+            {
+                // For integration tests, we'll replace this with InMemory DB in the test factory
+                // so here do nothing or optionally add InMemory here if you want
+            }
+            else
+            {
+                // Normal production or dev environment
+                services.AddDbContext<ProjectManagementContext>(options =>
+                    options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
+            }
             services.AddAutoMapper(typeof(Mapper));
             services.AddScoped<Application.Interfaces.IUserService, Application.Services.UserService>();
             services.AddScoped<Application.Interfaces.IProjectService, Application.Services.ProjectService>();

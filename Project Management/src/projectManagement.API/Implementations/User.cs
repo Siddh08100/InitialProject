@@ -6,7 +6,6 @@ using System;
 using projectManagement.API.Controllers;
 using System.ComponentModel.DataAnnotations;
 using projectManagement.Application.DTO;
-using projectManagement.Application.StatusCodes;
 using projectManagement.API.Models;
 
 namespace projectManagement.API.Implementations;
@@ -17,7 +16,6 @@ namespace projectManagement.API.Implementations;
 public class User : UserApiController
 {
     private readonly IUserService _userService;
-    private readonly Enums _statusCode = new();
 
     /// <summary>
     /// Constructor for User API Implementation
@@ -132,12 +130,14 @@ public class User : UserApiController
     /// </summary>
     /// <param name="pageIndex">Page index</param>
     /// <param name="pageSize">Page size</param>
-    /// <param name="totalCount">Total count</param>
-    /// <param name="pageNumber">Page number</param>
     /// <response code="200">Returns a list of users</response>
     /// <response code="400">Bad Request</response>
     public override async Task<IActionResult> GetUsers(long? pageIndex, long? pageSize)
     {
+        if (pageIndex <= 0 || pageSize <= 0)
+        {
+            return BadRequest(new { message = "Invalid paging parameters" });
+        }
         try
         {
             var response = await _userService.GetAllUsersAsync(pageIndex ?? 1, pageSize ?? 10);
